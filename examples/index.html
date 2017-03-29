@@ -1,0 +1,66 @@
+<!DOCTYPE html >
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta charset="utf-8">
+    <title>Premier Locator</title>
+
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,500italic,700,700italic|Roboto+Mono:400,500,700|Material+Icons">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    
+    <script src="//cdn.jsdelivr.net/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+    <script type="text/javascript" src="../SphereControls.js"></script>
+    <script type="text/javascript" src="../ProgressiveImgLoader.js"></script>
+    <script type="text/javascript" src="../BallSpinnerLoader.js"></script>
+    <script type="text/javascript" src="../SphereViewer.js"></script>
+  </head>
+  <body>
+    <script>
+      function cmdShowSphere_onClick(ev) {
+        
+        if(ev) {
+          ev.target.remove();
+        }
+
+        var isMobile = window.devicePixelRatio!==1;
+
+        var imageUrls;
+
+        if(isMobile) {
+          // on mobile use the smaller (1024) picture
+          imageUrls =  ['img/sphere128.jpg','img/sphere1024.jpg'];
+        } else {
+          // on mobile use the bigger (2048) picture
+          imageUrls =  ['img/sphere128.jpg','img/sphere2048.jpg'];
+        }
+
+        var config = {
+          logo:'img/logo.png',
+          logoDistance: -30,
+          hint: isMobile ? 'img/sphere-icon-mobile.png' : 'img/sphere-icon-desktop.png',
+          control: {
+            autoRotate: true, autoRotateSpeed: 2, autoRotateDirection:-1
+          }
+        };
+
+        var sphere = new window.SphereViewer(imageUrls, config);
+
+        sphere.addEventListener('close', showButton);
+      }
+
+      function showButton() {
+
+        var cmdShowSphere = document.createElement('button');
+        cmdShowSphere.className = 'cmdShowSphere';
+        cmdShowSphere.innerHTML = 'Show Sphere';
+        cmdShowSphere.addEventListener('click', cmdShowSphere_onClick)
+
+        document.getElementsByTagName('body')[0].appendChild(cmdShowSphere);
+      }
+
+
+      cmdShowSphere_onClick();
+    </script>
+  </body>
+</html>
