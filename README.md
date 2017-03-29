@@ -14,6 +14,9 @@ Displays photo spheres created with Ricoh Theta or Google Photosphere app on mob
 ## Dependencies
 SphereViewer was build and tested with Three.js v84
 
+## Live Demo
+Live demo is available on CodePen.io http://codepen.io/knee-cola/pen/vxQYNL
+
 ## Usage example
 
     // defining spinner config
