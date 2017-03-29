@@ -100,7 +100,8 @@
 
 			function onDocumentMouseDown( event ) {
 				
-				self.dispatchEvent({type: 'tap', originalEvent: event});
+				event.type = 'tap';
+				self.dispatchEvent(event);
 
 				event.preventDefault();
 				_isUserInteracting = true;
@@ -134,7 +135,9 @@
 					_isUserInteracting = true;
 					autoRotate_Stop();
 
-					self.dispatchEvent({type: 'tap', originalEvent: event});
+					event.type = 'tap';
+					self.dispatchEvent(event);
+					
 					event.preventDefault();
 					event.stopPropagation();
 					_dragStartPosition.x = event.touches[ 0 ].pageX;
