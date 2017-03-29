@@ -91,7 +91,7 @@
 				},
 				_autoRotation = {
 					enabled: !!config.autoRotate,
-					suspended: false,
+					suspended: !config.autoRotate,
 					speed: Math.max(0, Math.min(10, config.autoRotateSpeed || 1)) / 1000 * (config.autoRotateDirection===-1 ? -1 : 1),
 					delay: Math.max(config.autoRotateDelay || 5000, 1000), // after how much time shoud the automatic rotation start
 					timeout: null

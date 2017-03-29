@@ -41,25 +41,19 @@
  * 
  */
 (function(def){
-  def(['THREE','SphereControls','ProgressiveImgLoader'], function(THREE, SphereControls, ProgressiveImgLoader) {
+  def(['THREE','SphereControls','ProgressiveImgLoader', 'BallSpinnerLoader'], function(THREE, SphereControls, ProgressiveImgLoader, BallSpinnerLoader) {
 
       var SphereViewer = function(imageUrls, config) {
 
         this.isDisposed = false;
         this.config = config = config || {};
 
-        var spinnerConfig = config.spinner = config.spinner || {};
-        // defining default values        
-        spinnerConfig.groupRadius = spinnerConfig.groupRadius || 10;
-        spinnerConfig.animationDepth = spinnerConfig.animationDepth || 10;
-        spinnerConfig.circleRadius = spinnerConfig.circleRadius || 1;
-
         this.initViewport();
         this.initScene();
         this.initSphere(imageUrls);
 
         if(this.config.logo) {
-          this.initLogo(this.config.logo);
+          this.initLogo(this.config.logo, this.config.logoDistance===void 0 ? -15 : this.config.logoDistance);
         }
 
         if(this.config.hint) {
@@ -164,7 +158,7 @@
 
       }; // proto.initSphere = function(imageUrls) {...}
 
-      proto.initLogo = function(logoUrl) {
+      proto.initLogo = function(logoUrl, logoDistance) {
 
         var texLoader = new THREE.TextureLoader(),
           self = this;
@@ -182,7 +176,7 @@
               })
           );
 
-          self.logo.position.set(0,-15,1);
+          self.logo.position.set(0,logoDistance,0);
           self.logo.rotation.x = -Math.PI/2;
 
           self.scene.add(self.logo);
@@ -268,7 +262,7 @@
       }; // proto.render = function() {...}
 
       proto.showLoader = function() {
-        this.spinLoader = new THREE.BallSpinerLoader(this.config.spinner);
+        this.spinLoader = new BallSpinnerLoader(this.config.spinner);
         this.camera.add(this.spinLoader.mesh);
         this.spinLoader.mesh.position.set(0,0,-50);
         
@@ -314,7 +308,7 @@
     typeof require === 'undefined'?
         //Browser (regular script tag)
         function(deps, factory){
-            this.SphereViewer = factory(this.THREE, this.SphereControls, this.ProgressiveImgLoader);
+            this.SphereViewer = factory(this.THREE, this.SphereControls, this.ProgressiveImgLoader, this.BallSpinnerLoader);
         } :
         ((typeof exports === 'undefined')?
             //AMD
