@@ -48,6 +48,8 @@
         this.isDisposed = false;
         this.config = config = config || {};
 
+        config.showCloseButton = !!config.showCloseButton;
+
         this.initViewport();
         this.initScene();
         this.initSphere(imageUrls);
@@ -89,15 +91,16 @@
           this.container = document.createElement('div');
           this.container.className = 'sphere-container ' + (isMobile ? 'isMobile' : 'isDesktop');
 
-          this.closeButton = document.createElement('i');
-          this.closeButton.className = 'cmdCloseSphere material-icons';
-          this.closeButton.innerHTML = 'highlight_off';
-          this.container.appendChild(this.closeButton);
-
-          // attaching a bound version of the method to the instance
-          // > we'll need it to remove event listener
-          this.closeButton_onClick = this.closeButton_onClick.bind(this);
-          this.closeButton.addEventListener('click', this.closeButton_onClick);
+          if(this.config.showCloseButton) {
+            this.closeButton = document.createElement('i');
+            this.closeButton.className = 'cmdCloseSphere material-icons';
+            this.closeButton.innerHTML = 'highlight_off';
+            this.container.appendChild(this.closeButton);
+            // attaching a bound version of the method to the instance
+            // > we'll need it to remove event listener
+            this.closeButton_onClick = this.closeButton_onClick.bind(this);
+            this.closeButton.addEventListener('click', this.closeButton_onClick);
+          }
 
           document.getElementsByTagName('body')[0].appendChild(this.container);
 
@@ -283,7 +286,11 @@
       proto.dispose = function() {
 
         window.removeEventListener('resize', this.onResize);
-        this.closeButton.removeEventListener('click', this.closeButton_onClick);
+
+        if(this.closeButton) {
+          this.closeButton.removeEventListener('click', this.closeButton_onClick);
+        }
+
         this.controls.removeEventListener('tap', this.controls_onTap);
 
         this.imgLoader.dispose();
