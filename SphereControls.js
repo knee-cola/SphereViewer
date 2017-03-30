@@ -38,22 +38,6 @@
 
 	def(['three'], function(THREE) {
 
-		function _cloneEventObj(eventObj, overrideObj){
-
-		   if(!overrideObj){ overrideObj = {}; }
-
-		   function EventCloneFactory(overProps){
-		       for(var x in overProps){
-		           this[x] = overProps[x];
-		       }
-		    }
-
-		    EventCloneFactory.prototype = eventObj;
-
-		    return new EventCloneFactory(overrideObj);
-
-		}
-
 		var SphereControls = function (camera, domElement, config) {
 
 			var self = this;
@@ -116,10 +100,11 @@
 
 			function onDocumentMouseDown( event ) {
 				
-				// clone the original event object and dispatch that
-				self.dispatchEvent(_cloneEventObj(event, {type:'tap'}));
+				// attache the original event as payload
+				self.dispatchEvent({type:'tap', original:event });
 
 				event.preventDefault();
+
 				_isUserInteracting = true;
 				autoRotate_Stop();
 
@@ -139,6 +124,7 @@
 			}
 			function onDocumentMouseUp( event ) {
 				_isUserInteracting = false;
+				event.preventDefault()
 				autoRotate_Start();
 			}
 			function onDocumentMouseWheel( event ) {
@@ -151,8 +137,8 @@
 					_isUserInteracting = true;
 					autoRotate_Stop();
 
-					// clone the original event object and dispatch that
-					self.dispatchEvent(_cloneEventObj(event, {type:'tap'}));
+					// attache the original event as payload
+					self.dispatchEvent({type:'tap', original:event });
 
 					event.preventDefault();
 					event.stopPropagation();

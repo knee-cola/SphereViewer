@@ -816,10 +816,17 @@
 	},
 	"expanded_folders":
 	[
-		"/C/inetpub/dev.ngit.hr/sphere-viewer"
+		"/C/inetpub/dev.ngit.hr/sphere-viewer",
+		"/C/inetpub/dev.ngit.hr/sphere-viewer/examples"
 	],
 	"file_history":
 	[
+		"/C/inetpub/dev.ngit.hr/sphere-viewer/SphereControls.js",
+		"/C/inetpub/dev.ngit.hr/sphere-viewer/examples/index.html",
+		"/C/inetpub/dev.ngit.hr/sphere-viewer/SphereViewer.js",
+		"/C/inetpub/dev.ngit.hr/sphere-viewer/README.md",
+		"/C/inetpub/dev.ngit.hr/sphere-viewer/BallSpinnerLoader.js",
+		"/C/inetpub/dev.ngit.hr/sphere-viewer/examples/style.css",
 		"/C/inetpub/pos-locator/js/ngit/three/BallSpinerLoader.js",
 		"/C/inetpub/pos-locator/js/ngit/three/ProgressiveImgLoader.js",
 		"/C/inetpub/pos-locator/js/ngit/three/SphereViewer.js",
@@ -941,17 +948,11 @@
 		"/C/inetpub/dev.ngit.hr/vr/book/c03/index.html",
 		"/C/inetpub/dev.ngit.hr/vr/book/c02/index.html",
 		"/C/inetpub/dev.ngit.hr/vr/book/c01/index.html",
-		"/C/inetpub/dev.ngit.hr/vr/vr3/index.html",
-		"/C/inetpub/dev.ngit.hr/vr/vr4/js/nik/lib/shapeFactory.js",
-		"/C/inetpub/dev.ngit.hr/vr/book/c02/05-custom-geometry.html",
-		"/C/inetpub/dev.ngit.hr/vr/vr4/js/lib/OrbitControls.js",
-		"/C/inetpub/dev.ngit.hr/vr/vr0/index.html",
-		"/C/inetpub/web5/web.config",
-		"/C/inetpub/dev.ngit.hr/vr/web.config"
+		"/C/inetpub/dev.ngit.hr/vr/vr3/index.html"
 	],
 	"find":
 	{
-		"height": 26.0
+		"height": 34.0
 	},
 	"find_in_files":
 	{
@@ -1093,6 +1094,38 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"material",
+			"dispatchEvent",
+			" clone the original event object and dispatch that",
+			"_cloneEventObj",
+			"dispatchEvent",
+			"showCloseButton",
+			"closeButton",
+			"closeButton_onClick",
+			"showCloseButton",
+			"closeButton",
+			"'tap'",
+			"'tap",
+			"controls_onTap",
+			"initSphere",
+			"$",
+			"initLogo",
+			"this.initLogo",
+			"config.spinner",
+			"spinnerConfig",
+			"close",
+			"<i",
+			"80",
+			"BallSpinnerLoader",
+			"BallSpinerLoader",
+			"enabled",
+			"config.autoRotate",
+			"autoRotate",
+			"controls",
+			"animationDepth",
+			"BallSpinerLoader",
+			"sphereConfig",
+			" (",
 			"SphereControls",
 			"dispatch",
 			"config.spinner",
@@ -1188,39 +1221,7 @@
 			"autoRotate_Start();",
 			"speed",
 			"timeSquare",
-			"phi",
-			"resistance",
-			"onDocumentTouchStart",
-			"isUserInteracting",
-			"10",
-			"lon",
-			"phi",
-			"onPointerDownLon",
-			"degToRad",
-			"90",
-			"phi",
-			"console",
-			"10",
-			"time",
-			"phi",
-			"speed",
-			"phi",
-			"onMouseDownLon",
-			"timeSquare",
-			"(time*time)",
-			"2",
-			"-1",
-			"phi",
-			"),",
-			"phi",
-			"lon",
-			"self",
-			"spinLoader",
-			"showHint",
-			"lon",
-			"controls_onTap",
-			"onTap",
-			"addEventListener"
+			"phi"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1228,6 +1229,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"BallSpinnerLoader",
 			"_curr.position",
 			"_currPosition.theta",
 			"_currPosition.phi",
@@ -1354,8 +1356,7 @@
 			"childCount",
 			"dogCount",
 			";\\n",
-			"actionContext",
-			"src_parentCtor_Name"
+			"actionContext"
 		],
 		"reverse": false,
 		"show_context": false,
@@ -1414,7 +1415,7 @@
 	"project": "sphere-viewer.sublime-project",
 	"replace":
 	{
-		"height": 48.0
+		"height": 62.0
 	},
 	"save_all_on_build": false,
 	"select_file":
