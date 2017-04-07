@@ -56,11 +56,11 @@ import {
     FrontSide as THREE_FrontSide,
     BackSide as THREE_BackSide
   } from 'three'
-
-import {SphereControls} from 'sphereControls'
-import {ProgressiveImgLoader} from 'progressiveImgLoader'
-import {BallSpinnerLoader} from 'ballSpinnerLoader'
 import $ from 'jquery-slim'
+
+import {SphereControls} from './sphereControls'
+import {ProgressiveImgLoader} from './progressiveImgLoader'
+import {BallSpinnerLoader} from './ballSpinnerLoader'
 
 export function Viewer(imageUrls, config) {
 

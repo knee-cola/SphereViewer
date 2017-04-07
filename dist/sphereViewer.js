@@ -91,559 +91,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
 /* 1 */
 /* unknown exports provided */
 /* all exports used */
-/*!**********************************!*\
-  !*** ./src/ballSpinnerLoader.js ***!
-  \**********************************/
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.BallSpinnerLoader = undefined;
-
-var _three = __webpack_require__(/*! three */ 0);
-
-var BallSpinnerLoader = function BallSpinnerLoader(config) {
-  config = config || {};
-
-  this.groupRadius = config.groupRadius || 10;
-  this.circleCount = config.circleCount || 8;
-  this.circleRadius = config.circleRadius || 1;
-  this.groupAngle = 0;
-
-  // circles depending on their opacity will
-  // have higer or lower opacity
-  // [amplitude] defines the amplitude
-  this.animationAmplitude = config.animationAmplitude || 10;
-
-  this.circles = [];
-  this.mesh = this.initGroup();
-}; /**
-    * BallSpinnerLoader.js <https://github.com/knee-cola/BallSpinnerLoader.js>
-    * Released under the MIT license
-    * @author Nikola Derežić / https://github.com/knee-cola
-    *
-    * This is a spinner/loader built for Three.js platform.
-    * 
-    * It can be used to notify user that some resources are being loaded.
-    * I made it to replace pure CSS spinner, which was displayed in the
-    * overlay above the 3D animation, since it was slowing down WebGL
-    *
-    * How to use:
-    * 
-    *    // defining spinner config
-    *    var spinnerConfig = {
-    *      groupRadius: 20, // outter radius of the spinner circle
-    *      circleCount: 8, // number of spinner elements (circles)
-    *      circleRadius: 5, // radius of each of the spinner elements (circles)
-    *      // as they spin, circles are brought closer to the camera af their
-    *      // opacity increases. Here we can define how close/far are
-    *      // the elements pushed
-    *      animationAmplitude: 10
-    *    };
-    *    
-    *
-    *    // creating a new spinner
-    *    var spinLoader = new BallSpinLoader(spinnerConfig);
-    *    
-    *    // add spinner to the scene
-    *    spinLoader.addToScene(scene);
-    *
-    *   // add it to the render funcion
-    *   function render() {
-    *
-    *      requestAnimationFrame( render );
-    *
-    *     // make it spin
-    *     spinLoader.animate();
-    *
-    *     renderer.render( scene, camera );
-    *   }
-    * 
-    */
-
-
-BallSpinnerLoader.prototype = {
-  makeCircle: function makeCircle(config) {
-    config = config || {};
-    var circleRadius = config.radius || 5,
-        circleSegments = config.segments || 16,
-        //<-- Increase or decrease for more resolution I guess
-    circleGeometry = new _three.CircleGeometry(circleRadius, circleSegments),
-        circleMaterial = new _three.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: config.opacity, side: _three.DoubleSide });
-
-    return {
-      mesh: new _three.Mesh(circleGeometry, circleMaterial),
-      opacityStep: config.opacityStep || 0.01
-    };
-  },
-  addToScene: function addToScene(scene) {
-    scene.add(this.mesh);
-  },
-  initGroup: function initGroup() {
-    var mesh = new _three.Object3D(),
-
-    // the opacity will be distributed symetrically
-    // with maximum on one side of the circle group
-    // and minimum at the opposite side
-    currOpacity = 0,
-        opacityStep = 1 / (this.circleCount / 2 + 1),
-
-    // opacity will be animated - here we define how fast
-    animationStep = 0.02,
-
-    // circles are distributed evenly around the group edge
-    currAngle = 0,
-        angleStep = 2 * Math.PI / this.circleCount;
-
-    for (var i = 0; i < this.circleCount; i++) {
-
-      currOpacity += opacityStep;
-
-      if (currOpacity > 1) {
-        // IF the max opacity has been reached
-        // > go into oposit direction
-        currOpacity = 1 - opacityStep;
-        opacityStep = -opacityStep;
-        // reverse the opacity animation direction,
-        // so that the second halve of the circles
-        // is on the fade-out direction
-        // ... the net result that the opacity minimum/maximum
-        // will rotate around the group
-        animationStep = -animationStep;
-      }
-
-      var oneCircle = this.makeCircle({ opacity: currOpacity, opacityStep: animationStep, radius: this.circleRadius });
-
-      // oneCircle.rotation.x = Math.PI / 4; // rotiram krug tako da bude položen na ravninu
-      var pos = this.polar2cartesian({ distance: this.groupRadius, radians: currAngle });
-      oneCircle.mesh.position.set(pos.x, pos.y, currOpacity * this.animationAmplitude);
-
-      currAngle += angleStep;
-
-      mesh.add(oneCircle.mesh);
-      this.circles.push(oneCircle);
-    }
-
-    return mesh;
-  },
-  polar2cartesian: function polar2cartesian(polar) {
-    return {
-      x: Math.round(polar.distance * Math.cos(polar.radians) * 1000) / 1000,
-      y: Math.round(polar.distance * Math.sin(polar.radians) * 1000) / 1000
-    };
-  },
-  animate: function animate() {
-    this.mesh.rotation.z += 0.02;
-    var circles = this.circles;
-    var zStep = 50 / (this.circleCount / 2 + 1);
-
-    for (var i = 0; i < circles.length; i++) {
-      var oneCircle = circles[i],
-          newOpacity = oneCircle.mesh.material.opacity + oneCircle.opacityStep,
-          newRadius = oneCircle.mesh.geometry.radius;
-
-      if (newOpacity > 1) {
-        newOpacity = 1 - oneCircle.opacityStep;
-        oneCircle.opacityStep = -oneCircle.opacityStep;
-      } else if (newOpacity < 0) {
-        newOpacity = oneCircle.opacityStep;
-        oneCircle.opacityStep = -oneCircle.opacityStep;
-      }
-
-      oneCircle.mesh.material.opacity = newOpacity;
-      oneCircle.mesh.position.z = newOpacity * this.animationAmplitude;
-    }
-  }
-};
-
-exports.BallSpinnerLoader = BallSpinnerLoader;
-
-/***/ }),
-/* 2 */
-/* unknown exports provided */
-/* all exports used */
-/*!*************************************!*\
-  !*** ./src/progressiveImgLoader.js ***!
-  \*************************************/
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.ProgressiveImgLoader = undefined;
-
-var _three = __webpack_require__(/*! three */ 0);
-
-var ProgressiveImgLoader = function ProgressiveImgLoader() {}; /**
-                                                                * ProgressiveImgLoader.js <https://github.com/knee-cola/ProgressiveImgLoader.js>
-                                                                * Released under the MIT license
-                                                                * @author Nikola Derežić / https://github.com/knee-cola
-                                                                * 
-                                                                * This is a simple progressive image loader for Three.js
-                                                                * 
-                                                                * It enables the smaller image (short loading time) files to be pre-loaded first,
-                                                                * before the big texture image is fully loaded.
-                                                                * 
-                                                                * The images are loaded in the order they are passed to the loader
-                                                                * 
-                                                                * The loader dispatches the following events:
-                                                                *  - progress = dispatched evey time an additional image was loaded
-                                                                *  - done = dispatched after the last image was loaded
-                                                                *  
-                                                                * Here's a simple example:
-                                                                * 
-                                                                *  // Defining an array of different sizes of images
-                                                                *  //
-                                                                *  // Hint: apart from degrading image resolution, smaller image files
-                                                                *  //       can also be produced by increasing the JPG compression
-                                                                *  var imageUrls = ['480p.jpg', '720p.jpg', '1080p.jpg', '2048p.jpg']:
-                                                                *  
-                                                                *  // creating a new loader
-                                                                *  var loader = new ProgressiveImageLoader(imageUrls);
-                                                                *  
-                                                                *  // registering event handlers
-                                                                *  loader.addEventListener('progress', function() { console.log('progress');  });
-                                                                *  loader.addEventListener('done', function() { console.log('done');  });
-                                                                *  
-                                                                *  // creating material - calling the [load] function
-                                                                *  var material = new THREE.MeshBasicMaterial({ map: loader.load() })
-                                                                *
-                                                                *  var mesh = new THREE.Mesh(geometry, material);
-                                                                *  
-                                                                *  scene.add(mesh);
-                                                                * 
-                                                                */
-
-var proto = ProgressiveImgLoader.prototype = Object.create(_three.EventDispatcher.prototype);
-
-proto.load = function (images) {
-
-  var self = this;
-
-  var texture = new _three.Texture();
-
-  // create an image object
-  var imageObj = self.imageObj = new Image(),
-      loadingIx = 0;
-
-  // this needs to be sit in order not to get "Tainted canvases may not be loaded." WebGL error
-  imageObj.crossOrigin = "anonymous";
-
-  imageObj.onload = function () {
-
-    // [imageObj] is set to NULL when the object is disposed
-    if (self.imageObj) {
-
-      texture.needsUpdate = true;
-
-      if (loadingIx < images.length) {
-        self.dispatchEvent({ type: 'progress', imageIndex: loadingIx });
-
-        // don't change the image [src] until the texture had a chance to update itself
-        window.setTimeout(function () {
-          imageObj.src = images[loadingIx++];
-        }, 1000);
-      } else {
-        self.dispatchEvent({ type: 'done' });
-        self.imageObj = null;
-      }
-    }
-  }; // imageObj.onload = function() {...}
-
-  // the loading process will begin after we set the [src] property
-  imageObj.src = images[loadingIx++];
-  texture.image = imageObj;
-
-  return texture;
-}; // proto.load = function(images) {...}
-
-proto.dispose = function () {
-  // stop loading current image
-  if (this.imageObj) {
-    this.imageObj.src = '';
-  }
-  this.imageObj = null;
-};
-
-exports.ProgressiveImgLoader = ProgressiveImgLoader;
-
-/***/ }),
-/* 3 */
-/* unknown exports provided */
-/* all exports used */
-/*!*******************************!*\
-  !*** ./src/sphereControls.js ***!
-  \*******************************/
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.SphereControls = undefined;
-
-var _three = __webpack_require__(/*! three */ 0);
-
-var SphereControls = function SphereControls(camera, domElement, config) {
-
-	var self = this;
-
-	config = config || {};
-
-	domElement = domElement !== undefined ? domElement : document;
-	domElement.addEventListener('mousedown', onDocumentMouseDown, false);
-	domElement.addEventListener('mousemove', onDocumentMouseMove, false);
-	domElement.addEventListener('mouseup', onDocumentMouseUp, false);
-	domElement.addEventListener('wheel', onDocumentMouseWheel, false);
-	domElement.addEventListener('touchstart', onDocumentTouchStart, false);
-	domElement.addEventListener('touchend', onDocumentTouchEnd, false);
-	domElement.addEventListener('touchmove', onDocumentTouchMove, false);
-
-	//  [initialTime] determins the how much the speed is initially decreased,
-	//  after the user releases the mouse button - the higher the value,
-	//  the larger initial drop in speed - don't go below 2
-	var initialTime = 5,
-
-	// [lubrication] determins how fast the speed decreases after the user
-	// releases the mouse button. Larger value, the slower the speed drops
-	lubrication = 60;
-
-	var _isUserInteracting = false,
-	    _dragStartPosition = {
-		x: null,
-		y: null,
-		lat: null,
-		lon: null
-	},
-	    _curr = {
-		position: {
-			lon: 90,
-			lat: 0,
-			phi: Math.PI / 2,
-			theta: 0
-		},
-		time: initialTime
-	},
-	    _prev = {
-		position: {
-			phi: _curr.position.phi,
-			theta: _curr.position.theta
-		},
-		time2: 1
-	},
-	    _target = new _three.Vector3(),
-	    _speed = {
-		phi: 0,
-		theta: 0
-	},
-	    _autoRotation = {
-		enabled: !!config.autoRotate,
-		suspended: !config.autoRotate,
-		speed: Math.max(0, Math.min(10, config.autoRotateSpeed || 1)) / 1000 * (config.autoRotateDirection === -1 ? -1 : 1),
-		delay: Math.max(config.autoRotateDelay || 5000, 1000), // after how much time shoud the automatic rotation start
-		timeout: null
-
-	};
-
-	function onDocumentMouseDown(event) {
-
-		// attache the original event as payload
-		self.dispatchEvent({ type: 'tap', original: event });
-
-		event.preventDefault();
-
-		_isUserInteracting = true;
-		autoRotate_Stop();
-
-		_curr.position.lon = _three.Math.radToDeg(_curr.position.theta);
-		_curr.position.lat = 90 - _three.Math.radToDeg(_curr.position.phi);
-
-		_dragStartPosition.x = event.clientX;
-		_dragStartPosition.y = event.clientY;
-		_dragStartPosition.lon = _curr.position.lon;
-		_dragStartPosition.lat = _curr.position.lat;
-	}
-	function onDocumentMouseMove(event) {
-		if (_isUserInteracting === true) {
-			_curr.position.lon = (_dragStartPosition.x - event.clientX) * 0.1 + _dragStartPosition.lon;
-			_curr.position.lat = (event.clientY - _dragStartPosition.y) * 0.1 + _dragStartPosition.lat;
-		}
-		self.dispatchEvent({ type: 'mouseMove', original: event });
-	}
-	function onDocumentMouseUp(event) {
-		_isUserInteracting = false;
-		event.preventDefault();
-		autoRotate_Start();
-	}
-	function onDocumentMouseWheel(event) {
-		camera.fov += event.deltaY * 0.05;
-		camera.updateProjectionMatrix();
-	}
-	function onDocumentTouchStart(event) {
-		if (event.touches.length == 1) {
-
-			_isUserInteracting = true;
-			autoRotate_Stop();
-
-			// attache the original event as payload
-			self.dispatchEvent({ type: 'tap', original: event });
-
-			event.preventDefault();
-			event.stopPropagation();
-			_dragStartPosition.x = event.touches[0].pageX;
-			_dragStartPosition.y = event.touches[0].pageY;
-
-			_curr.position.lon = _three.Math.radToDeg(_curr.position.theta);
-			_curr.position.lat = 90 - _three.Math.radToDeg(_curr.position.phi);
-
-			_dragStartPosition.lon = _curr.position.lon;
-			_dragStartPosition.lat = _curr.position.lat;
-		}
-	}
-	function onDocumentTouchMove(event) {
-		if (event.touches.length == 1) {
-			event.preventDefault();
-			event.stopPropagation();
-
-			_curr.position.lon = (_dragStartPosition.x - event.touches[0].pageX) * 0.1 + _dragStartPosition.lon;
-			_curr.position.lat = (event.touches[0].pageY - _dragStartPosition.y) * 0.1 + _dragStartPosition.lat;
-		}
-	}
-	function onDocumentTouchEnd(event) {
-		_isUserInteracting = false;
-		autoRotate_Start();
-	}
-
-	function autoRotate_Stop() {
-		_autoRotation.suspended = true;
-
-		if (_autoRotation.timeout) {
-			window.clearTimeout(_autoRotation.timeout);
-		}
-	}
-
-	function autoRotate_Start() {
-		if (_autoRotation.enabled) {
-			_autoRotation.timeout = window.setTimeout(function () {
-				_autoRotation.timeout = null;
-				_autoRotation.suspended = false;
-			}, _autoRotation.delay);
-		}
-	}
-
-	this.update = function () {
-
-		if (_isUserInteracting) {
-
-			_curr.position.lat = Math.max(-85, Math.min(85, _curr.position.lat));
-
-			_curr.position.phi = _three.Math.degToRad(90 - _curr.position.lat);
-			_curr.position.theta = _three.Math.degToRad(_curr.position.lon);
-
-			// calculate the drag speed
-			_speed = {
-				phi: _curr.position.phi - _prev.position.phi,
-				theta: _curr.position.theta - _prev.position.theta
-			};
-
-			_curr.time = initialTime; // reset the time to initial time
-
-			_prev.time2 = 1;
-		} else {
-
-			var time2 = _curr.time * _curr.time / lubrication;
-			_curr.time++;
-
-			// calculating the new value of speed
-			_speed.phi = _speed.phi * _prev.time2 / time2;
-			_speed.theta = _speed.theta * _prev.time2 / time2;
-
-			_prev.time2 = time2;
-
-			if (!_autoRotation.suspended) {
-				_speed.theta = _autoRotation.speed < 0 ? Math.min(_speed.theta, _autoRotation.speed) : Math.max(_speed.theta, _autoRotation.speed);
-			}
-
-			// adjusting the camera angle
-			_curr.position.phi += _speed.phi;
-			_curr.position.theta += _speed.theta;
-
-			if (_curr.position.phi > Math.PI) {
-				// IF the camera hits the sphere bottom
-				// > make it bouce back
-				_curr.position.phi = Math.PI;
-				_speed.phi = _speed.phi * -1;
-			} else if (_curr.position.phi < 0) {
-				// IF the camera hits the sphere top
-				// > make it bouce back
-				_curr.position.phi = 0;
-				_speed.phi = _speed.phi * -1;
-			}
-		}
-
-		_prev.position.phi = _curr.position.phi;
-		_prev.position.theta = _curr.position.theta;
-
-		_target.x = 500 * Math.sin(_curr.position.phi) * Math.cos(_curr.position.theta);
-		_target.y = 500 * Math.cos(_curr.position.phi);
-		_target.z = 500 * Math.sin(_curr.position.phi) * Math.sin(_curr.position.theta);
-
-		camera.lookAt(_target);
-	};
-}; // SphereControls = function (camera) {...}
-
-/**
- * SphereControls.js <https://github.com/knee-cola/SphereControls.js>
- * Released under the MIT license
- * @author Nikola Derežić / https://github.com/knee-cola
- * 
- * This class controls the camera positioned in the middle of a sphere. It
- * allows the user to look around. It supports desktop (click events) and mobile
- * browser (touch events).
- * 
- * How to use:
- * 
- *  // defining te config for the controls
- * 	var controlConfig = {
- * 		autoRotate: true, // the camera should rotate automatially
- * 		autoRotateSpeed: 2, // the speed of automatic rotation
- * 		autoRotateDirection: -1, // the direction (1=left / -1=right)
- * 		autoRotateDelay: 5000 // for how long should automatic rotation be paused after a user interaction
- * 	};
- * 
- * 	var _ctrl = new SphereControls(_camera, _renderer.domElement, controlConfig);
- * 	
- * 	// attaching the event handler
- * 	_ctrl.addEventListener('tap', function() { console.log('user tapped the screen'); });
- * 
- *   function render() {
- *
- *      requestAnimationFrame( render );
- *
- *     // updating controls from the [render] function
- *     _ctrl.update();
- *
- *     _renderer.render( _scene, _camera );
- *   }
- *   
- */
-SphereControls.prototype = Object.create(_three.EventDispatcher.prototype);
-
-exports.SphereControls = SphereControls;
-
-/***/ }),
-/* 4 */
-/* unknown exports provided */
-/* all exports used */
 /*!***********************!*\
   !*** ./src/viewer.js ***!
   \***********************/
@@ -659,15 +106,15 @@ exports.Viewer = Viewer;
 
 var _three = __webpack_require__(/*! three */ 0);
 
-var _sphereControls = __webpack_require__(/*! sphereControls */ 3);
-
-var _progressiveImgLoader = __webpack_require__(/*! progressiveImgLoader */ 2);
-
-var _ballSpinnerLoader = __webpack_require__(/*! ballSpinnerLoader */ 1);
-
 var _jquerySlim = __webpack_require__(/*! jquery-slim */ 6);
 
 var _jquerySlim2 = _interopRequireDefault(_jquerySlim);
+
+var _sphereControls = __webpack_require__(/*! ./sphereControls */ 4);
+
+var _progressiveImgLoader = __webpack_require__(/*! ./progressiveImgLoader */ 3);
+
+var _ballSpinnerLoader = __webpack_require__(/*! ./ballSpinnerLoader */ 2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -975,6 +422,559 @@ proto.dispose = function () {
 }; // proto.dispose = function() {...}
 
 /***/ }),
+/* 2 */
+/* unknown exports provided */
+/* all exports used */
+/*!**********************************!*\
+  !*** ./src/ballSpinnerLoader.js ***!
+  \**********************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.BallSpinnerLoader = undefined;
+
+var _three = __webpack_require__(/*! three */ 0);
+
+var BallSpinnerLoader = function BallSpinnerLoader(config) {
+  config = config || {};
+
+  this.groupRadius = config.groupRadius || 10;
+  this.circleCount = config.circleCount || 8;
+  this.circleRadius = config.circleRadius || 1;
+  this.groupAngle = 0;
+
+  // circles depending on their opacity will
+  // have higer or lower opacity
+  // [amplitude] defines the amplitude
+  this.animationAmplitude = config.animationAmplitude || 10;
+
+  this.circles = [];
+  this.mesh = this.initGroup();
+}; /**
+    * BallSpinnerLoader.js <https://github.com/knee-cola/BallSpinnerLoader.js>
+    * Released under the MIT license
+    * @author Nikola Derežić / https://github.com/knee-cola
+    *
+    * This is a spinner/loader built for Three.js platform.
+    * 
+    * It can be used to notify user that some resources are being loaded.
+    * I made it to replace pure CSS spinner, which was displayed in the
+    * overlay above the 3D animation, since it was slowing down WebGL
+    *
+    * How to use:
+    * 
+    *    // defining spinner config
+    *    var spinnerConfig = {
+    *      groupRadius: 20, // outter radius of the spinner circle
+    *      circleCount: 8, // number of spinner elements (circles)
+    *      circleRadius: 5, // radius of each of the spinner elements (circles)
+    *      // as they spin, circles are brought closer to the camera af their
+    *      // opacity increases. Here we can define how close/far are
+    *      // the elements pushed
+    *      animationAmplitude: 10
+    *    };
+    *    
+    *
+    *    // creating a new spinner
+    *    var spinLoader = new BallSpinLoader(spinnerConfig);
+    *    
+    *    // add spinner to the scene
+    *    spinLoader.addToScene(scene);
+    *
+    *   // add it to the render funcion
+    *   function render() {
+    *
+    *      requestAnimationFrame( render );
+    *
+    *     // make it spin
+    *     spinLoader.animate();
+    *
+    *     renderer.render( scene, camera );
+    *   }
+    * 
+    */
+
+
+BallSpinnerLoader.prototype = {
+  makeCircle: function makeCircle(config) {
+    config = config || {};
+    var circleRadius = config.radius || 5,
+        circleSegments = config.segments || 16,
+        //<-- Increase or decrease for more resolution I guess
+    circleGeometry = new _three.CircleGeometry(circleRadius, circleSegments),
+        circleMaterial = new _three.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: config.opacity, side: _three.DoubleSide });
+
+    return {
+      mesh: new _three.Mesh(circleGeometry, circleMaterial),
+      opacityStep: config.opacityStep || 0.01
+    };
+  },
+  addToScene: function addToScene(scene) {
+    scene.add(this.mesh);
+  },
+  initGroup: function initGroup() {
+    var mesh = new _three.Object3D(),
+
+    // the opacity will be distributed symetrically
+    // with maximum on one side of the circle group
+    // and minimum at the opposite side
+    currOpacity = 0,
+        opacityStep = 1 / (this.circleCount / 2 + 1),
+
+    // opacity will be animated - here we define how fast
+    animationStep = 0.02,
+
+    // circles are distributed evenly around the group edge
+    currAngle = 0,
+        angleStep = 2 * Math.PI / this.circleCount;
+
+    for (var i = 0; i < this.circleCount; i++) {
+
+      currOpacity += opacityStep;
+
+      if (currOpacity > 1) {
+        // IF the max opacity has been reached
+        // > go into oposit direction
+        currOpacity = 1 - opacityStep;
+        opacityStep = -opacityStep;
+        // reverse the opacity animation direction,
+        // so that the second halve of the circles
+        // is on the fade-out direction
+        // ... the net result that the opacity minimum/maximum
+        // will rotate around the group
+        animationStep = -animationStep;
+      }
+
+      var oneCircle = this.makeCircle({ opacity: currOpacity, opacityStep: animationStep, radius: this.circleRadius });
+
+      // oneCircle.rotation.x = Math.PI / 4; // rotiram krug tako da bude položen na ravninu
+      var pos = this.polar2cartesian({ distance: this.groupRadius, radians: currAngle });
+      oneCircle.mesh.position.set(pos.x, pos.y, currOpacity * this.animationAmplitude);
+
+      currAngle += angleStep;
+
+      mesh.add(oneCircle.mesh);
+      this.circles.push(oneCircle);
+    }
+
+    return mesh;
+  },
+  polar2cartesian: function polar2cartesian(polar) {
+    return {
+      x: Math.round(polar.distance * Math.cos(polar.radians) * 1000) / 1000,
+      y: Math.round(polar.distance * Math.sin(polar.radians) * 1000) / 1000
+    };
+  },
+  animate: function animate() {
+    this.mesh.rotation.z += 0.02;
+    var circles = this.circles;
+    var zStep = 50 / (this.circleCount / 2 + 1);
+
+    for (var i = 0; i < circles.length; i++) {
+      var oneCircle = circles[i],
+          newOpacity = oneCircle.mesh.material.opacity + oneCircle.opacityStep,
+          newRadius = oneCircle.mesh.geometry.radius;
+
+      if (newOpacity > 1) {
+        newOpacity = 1 - oneCircle.opacityStep;
+        oneCircle.opacityStep = -oneCircle.opacityStep;
+      } else if (newOpacity < 0) {
+        newOpacity = oneCircle.opacityStep;
+        oneCircle.opacityStep = -oneCircle.opacityStep;
+      }
+
+      oneCircle.mesh.material.opacity = newOpacity;
+      oneCircle.mesh.position.z = newOpacity * this.animationAmplitude;
+    }
+  }
+};
+
+exports.BallSpinnerLoader = BallSpinnerLoader;
+
+/***/ }),
+/* 3 */
+/* unknown exports provided */
+/* all exports used */
+/*!*************************************!*\
+  !*** ./src/progressiveImgLoader.js ***!
+  \*************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ProgressiveImgLoader = undefined;
+
+var _three = __webpack_require__(/*! three */ 0);
+
+var ProgressiveImgLoader = function ProgressiveImgLoader() {}; /**
+                                                                * ProgressiveImgLoader.js <https://github.com/knee-cola/ProgressiveImgLoader.js>
+                                                                * Released under the MIT license
+                                                                * @author Nikola Derežić / https://github.com/knee-cola
+                                                                * 
+                                                                * This is a simple progressive image loader for Three.js
+                                                                * 
+                                                                * It enables the smaller image (short loading time) files to be pre-loaded first,
+                                                                * before the big texture image is fully loaded.
+                                                                * 
+                                                                * The images are loaded in the order they are passed to the loader
+                                                                * 
+                                                                * The loader dispatches the following events:
+                                                                *  - progress = dispatched evey time an additional image was loaded
+                                                                *  - done = dispatched after the last image was loaded
+                                                                *  
+                                                                * Here's a simple example:
+                                                                * 
+                                                                *  // Defining an array of different sizes of images
+                                                                *  //
+                                                                *  // Hint: apart from degrading image resolution, smaller image files
+                                                                *  //       can also be produced by increasing the JPG compression
+                                                                *  var imageUrls = ['480p.jpg', '720p.jpg', '1080p.jpg', '2048p.jpg']:
+                                                                *  
+                                                                *  // creating a new loader
+                                                                *  var loader = new ProgressiveImageLoader(imageUrls);
+                                                                *  
+                                                                *  // registering event handlers
+                                                                *  loader.addEventListener('progress', function() { console.log('progress');  });
+                                                                *  loader.addEventListener('done', function() { console.log('done');  });
+                                                                *  
+                                                                *  // creating material - calling the [load] function
+                                                                *  var material = new THREE.MeshBasicMaterial({ map: loader.load() })
+                                                                *
+                                                                *  var mesh = new THREE.Mesh(geometry, material);
+                                                                *  
+                                                                *  scene.add(mesh);
+                                                                * 
+                                                                */
+
+var proto = ProgressiveImgLoader.prototype = Object.create(_three.EventDispatcher.prototype);
+
+proto.load = function (images) {
+
+  var self = this;
+
+  var texture = new _three.Texture();
+
+  // create an image object
+  var imageObj = self.imageObj = new Image(),
+      loadingIx = 0;
+
+  // this needs to be sit in order not to get "Tainted canvases may not be loaded." WebGL error
+  imageObj.crossOrigin = "anonymous";
+
+  imageObj.onload = function () {
+
+    // [imageObj] is set to NULL when the object is disposed
+    if (self.imageObj) {
+
+      texture.needsUpdate = true;
+
+      if (loadingIx < images.length) {
+        self.dispatchEvent({ type: 'progress', imageIndex: loadingIx });
+
+        // don't change the image [src] until the texture had a chance to update itself
+        window.setTimeout(function () {
+          imageObj.src = images[loadingIx++];
+        }, 1000);
+      } else {
+        self.dispatchEvent({ type: 'done' });
+        self.imageObj = null;
+      }
+    }
+  }; // imageObj.onload = function() {...}
+
+  // the loading process will begin after we set the [src] property
+  imageObj.src = images[loadingIx++];
+  texture.image = imageObj;
+
+  return texture;
+}; // proto.load = function(images) {...}
+
+proto.dispose = function () {
+  // stop loading current image
+  if (this.imageObj) {
+    this.imageObj.src = '';
+  }
+  this.imageObj = null;
+};
+
+exports.ProgressiveImgLoader = ProgressiveImgLoader;
+
+/***/ }),
+/* 4 */
+/* unknown exports provided */
+/* all exports used */
+/*!*******************************!*\
+  !*** ./src/sphereControls.js ***!
+  \*******************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.SphereControls = undefined;
+
+var _three = __webpack_require__(/*! three */ 0);
+
+var SphereControls = function SphereControls(camera, domElement, config) {
+
+	var self = this;
+
+	config = config || {};
+
+	domElement = domElement !== undefined ? domElement : document;
+	domElement.addEventListener('mousedown', onDocumentMouseDown, false);
+	domElement.addEventListener('mousemove', onDocumentMouseMove, false);
+	domElement.addEventListener('mouseup', onDocumentMouseUp, false);
+	domElement.addEventListener('wheel', onDocumentMouseWheel, false);
+	domElement.addEventListener('touchstart', onDocumentTouchStart, false);
+	domElement.addEventListener('touchend', onDocumentTouchEnd, false);
+	domElement.addEventListener('touchmove', onDocumentTouchMove, false);
+
+	//  [initialTime] determins the how much the speed is initially decreased,
+	//  after the user releases the mouse button - the higher the value,
+	//  the larger initial drop in speed - don't go below 2
+	var initialTime = 5,
+
+	// [lubrication] determins how fast the speed decreases after the user
+	// releases the mouse button. Larger value, the slower the speed drops
+	lubrication = 60;
+
+	var _isUserInteracting = false,
+	    _dragStartPosition = {
+		x: null,
+		y: null,
+		lat: null,
+		lon: null
+	},
+	    _curr = {
+		position: {
+			lon: 90,
+			lat: 0,
+			phi: Math.PI / 2,
+			theta: 0
+		},
+		time: initialTime
+	},
+	    _prev = {
+		position: {
+			phi: _curr.position.phi,
+			theta: _curr.position.theta
+		},
+		time2: 1
+	},
+	    _target = new _three.Vector3(),
+	    _speed = {
+		phi: 0,
+		theta: 0
+	},
+	    _autoRotation = {
+		enabled: !!config.autoRotate,
+		suspended: !config.autoRotate,
+		speed: Math.max(0, Math.min(10, config.autoRotateSpeed || 1)) / 1000 * (config.autoRotateDirection === -1 ? -1 : 1),
+		delay: Math.max(config.autoRotateDelay || 5000, 1000), // after how much time shoud the automatic rotation start
+		timeout: null
+
+	};
+
+	function onDocumentMouseDown(event) {
+
+		// attache the original event as payload
+		self.dispatchEvent({ type: 'tap', original: event });
+
+		event.preventDefault();
+
+		_isUserInteracting = true;
+		autoRotate_Stop();
+
+		_curr.position.lon = _three.Math.radToDeg(_curr.position.theta);
+		_curr.position.lat = 90 - _three.Math.radToDeg(_curr.position.phi);
+
+		_dragStartPosition.x = event.clientX;
+		_dragStartPosition.y = event.clientY;
+		_dragStartPosition.lon = _curr.position.lon;
+		_dragStartPosition.lat = _curr.position.lat;
+	}
+	function onDocumentMouseMove(event) {
+		if (_isUserInteracting === true) {
+			_curr.position.lon = (_dragStartPosition.x - event.clientX) * 0.1 + _dragStartPosition.lon;
+			_curr.position.lat = (event.clientY - _dragStartPosition.y) * 0.1 + _dragStartPosition.lat;
+		}
+		self.dispatchEvent({ type: 'mouseMove', original: event });
+	}
+	function onDocumentMouseUp(event) {
+		_isUserInteracting = false;
+		event.preventDefault();
+		autoRotate_Start();
+	}
+	function onDocumentMouseWheel(event) {
+		camera.fov += event.deltaY * 0.05;
+		camera.updateProjectionMatrix();
+	}
+	function onDocumentTouchStart(event) {
+		if (event.touches.length == 1) {
+
+			_isUserInteracting = true;
+			autoRotate_Stop();
+
+			// attache the original event as payload
+			self.dispatchEvent({ type: 'tap', original: event });
+
+			event.preventDefault();
+			event.stopPropagation();
+			_dragStartPosition.x = event.touches[0].pageX;
+			_dragStartPosition.y = event.touches[0].pageY;
+
+			_curr.position.lon = _three.Math.radToDeg(_curr.position.theta);
+			_curr.position.lat = 90 - _three.Math.radToDeg(_curr.position.phi);
+
+			_dragStartPosition.lon = _curr.position.lon;
+			_dragStartPosition.lat = _curr.position.lat;
+		}
+	}
+	function onDocumentTouchMove(event) {
+		if (event.touches.length == 1) {
+			event.preventDefault();
+			event.stopPropagation();
+
+			_curr.position.lon = (_dragStartPosition.x - event.touches[0].pageX) * 0.1 + _dragStartPosition.lon;
+			_curr.position.lat = (event.touches[0].pageY - _dragStartPosition.y) * 0.1 + _dragStartPosition.lat;
+		}
+	}
+	function onDocumentTouchEnd(event) {
+		_isUserInteracting = false;
+		autoRotate_Start();
+	}
+
+	function autoRotate_Stop() {
+		_autoRotation.suspended = true;
+
+		if (_autoRotation.timeout) {
+			window.clearTimeout(_autoRotation.timeout);
+		}
+	}
+
+	function autoRotate_Start() {
+		if (_autoRotation.enabled) {
+			_autoRotation.timeout = window.setTimeout(function () {
+				_autoRotation.timeout = null;
+				_autoRotation.suspended = false;
+			}, _autoRotation.delay);
+		}
+	}
+
+	this.update = function () {
+
+		if (_isUserInteracting) {
+
+			_curr.position.lat = Math.max(-85, Math.min(85, _curr.position.lat));
+
+			_curr.position.phi = _three.Math.degToRad(90 - _curr.position.lat);
+			_curr.position.theta = _three.Math.degToRad(_curr.position.lon);
+
+			// calculate the drag speed
+			_speed = {
+				phi: _curr.position.phi - _prev.position.phi,
+				theta: _curr.position.theta - _prev.position.theta
+			};
+
+			_curr.time = initialTime; // reset the time to initial time
+
+			_prev.time2 = 1;
+		} else {
+
+			var time2 = _curr.time * _curr.time / lubrication;
+			_curr.time++;
+
+			// calculating the new value of speed
+			_speed.phi = _speed.phi * _prev.time2 / time2;
+			_speed.theta = _speed.theta * _prev.time2 / time2;
+
+			_prev.time2 = time2;
+
+			if (!_autoRotation.suspended) {
+				_speed.theta = _autoRotation.speed < 0 ? Math.min(_speed.theta, _autoRotation.speed) : Math.max(_speed.theta, _autoRotation.speed);
+			}
+
+			// adjusting the camera angle
+			_curr.position.phi += _speed.phi;
+			_curr.position.theta += _speed.theta;
+
+			if (_curr.position.phi > Math.PI) {
+				// IF the camera hits the sphere bottom
+				// > make it bouce back
+				_curr.position.phi = Math.PI;
+				_speed.phi = _speed.phi * -1;
+			} else if (_curr.position.phi < 0) {
+				// IF the camera hits the sphere top
+				// > make it bouce back
+				_curr.position.phi = 0;
+				_speed.phi = _speed.phi * -1;
+			}
+		}
+
+		_prev.position.phi = _curr.position.phi;
+		_prev.position.theta = _curr.position.theta;
+
+		_target.x = 500 * Math.sin(_curr.position.phi) * Math.cos(_curr.position.theta);
+		_target.y = 500 * Math.cos(_curr.position.phi);
+		_target.z = 500 * Math.sin(_curr.position.phi) * Math.sin(_curr.position.theta);
+
+		camera.lookAt(_target);
+	};
+}; // SphereControls = function (camera) {...}
+
+/**
+ * SphereControls.js <https://github.com/knee-cola/SphereControls.js>
+ * Released under the MIT license
+ * @author Nikola Derežić / https://github.com/knee-cola
+ * 
+ * This class controls the camera positioned in the middle of a sphere. It
+ * allows the user to look around. It supports desktop (click events) and mobile
+ * browser (touch events).
+ * 
+ * How to use:
+ * 
+ *  // defining te config for the controls
+ * 	var controlConfig = {
+ * 		autoRotate: true, // the camera should rotate automatially
+ * 		autoRotateSpeed: 2, // the speed of automatic rotation
+ * 		autoRotateDirection: -1, // the direction (1=left / -1=right)
+ * 		autoRotateDelay: 5000 // for how long should automatic rotation be paused after a user interaction
+ * 	};
+ * 
+ * 	var _ctrl = new SphereControls(_camera, _renderer.domElement, controlConfig);
+ * 	
+ * 	// attaching the event handler
+ * 	_ctrl.addEventListener('tap', function() { console.log('user tapped the screen'); });
+ * 
+ *   function render() {
+ *
+ *      requestAnimationFrame( render );
+ *
+ *     // updating controls from the [render] function
+ *     _ctrl.update();
+ *
+ *     _renderer.render( _scene, _camera );
+ *   }
+ *   
+ */
+SphereControls.prototype = Object.create(_three.EventDispatcher.prototype);
+
+exports.SphereControls = SphereControls;
+
+/***/ }),
 /* 5 */
 /* unknown exports provided */
 /* all exports used */
@@ -990,39 +990,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _viewer = __webpack_require__(/*! viewer.js */ 4);
+var _viewer = __webpack_require__(/*! ./viewer.js */ 1);
 
 Object.defineProperty(exports, 'Viewer', {
   enumerable: true,
   get: function get() {
     return _viewer.Viewer;
-  }
-});
-
-var _ballSpinnerLoader = __webpack_require__(/*! ballSpinnerLoader.js */ 1);
-
-Object.defineProperty(exports, 'BallSpinnerLoader', {
-  enumerable: true,
-  get: function get() {
-    return _ballSpinnerLoader.BallSpinnerLoader;
-  }
-});
-
-var _sphereControls = __webpack_require__(/*! sphereControls.js */ 3);
-
-Object.defineProperty(exports, 'SphereControls', {
-  enumerable: true,
-  get: function get() {
-    return _sphereControls.SphereControls;
-  }
-});
-
-var _progressiveImgLoader = __webpack_require__(/*! progressiveImgLoader.js */ 2);
-
-Object.defineProperty(exports, 'ProgressiveImgLoader', {
-  enumerable: true,
-  get: function get() {
-    return _progressiveImgLoader.ProgressiveImgLoader;
   }
 });
 
