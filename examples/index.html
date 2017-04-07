@@ -10,10 +10,7 @@
     
     <script src="//cdn.jsdelivr.net/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
-    <script type="text/javascript" src="../SphereControls.js"></script>
-    <script type="text/javascript" src="../ProgressiveImgLoader.js"></script>
-    <script type="text/javascript" src="../BallSpinnerLoader.js"></script>
-    <script type="text/javascript" src="../SphereViewer.js"></script>
+    <script type="text/javascript" src="../dist/sphereViewer.min.js"></script>
   </head>
   <body>
     <script>
@@ -44,7 +41,7 @@
           }
         };
 
-        var sphere = new window.SphereViewer(imageUrls, config);
+        var sphere = new SphereViewer.Viewer(imageUrls, config);
 
         sphere.addEventListener('close', showButton);
       }

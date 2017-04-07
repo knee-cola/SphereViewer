@@ -519,6 +519,32 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "SphereViewer.js",
+			"settings":
+			{
+				"buffer_size": 10952,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "ProgressiveImgLoader.js",
+			"settings":
+			{
+				"buffer_size": 3738,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "examples/index.html",
+			"settings":
+			{
+				"buffer_size": 2292,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -821,9 +847,9 @@
 	],
 	"file_history":
 	[
+		"/C/inetpub/dev.ngit.hr/sphere-viewer/SphereViewer.js",
 		"/C/inetpub/dev.ngit.hr/sphere-viewer/SphereControls.js",
 		"/C/inetpub/dev.ngit.hr/sphere-viewer/examples/index.html",
-		"/C/inetpub/dev.ngit.hr/sphere-viewer/SphereViewer.js",
 		"/C/inetpub/dev.ngit.hr/sphere-viewer/README.md",
 		"/C/inetpub/dev.ngit.hr/sphere-viewer/BallSpinnerLoader.js",
 		"/C/inetpub/dev.ngit.hr/sphere-viewer/examples/style.css",
@@ -1094,6 +1120,16 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"onDocumentMouseDown",
+			"onDocumentMouseMove",
+			"render",
+			"event",
+			"dispatch",
+			"dispa",
+			"event",
+			"MeshBasicMaterial",
+			"light",
+			"MeshBasicMaterial",
 			"material",
 			"dispatchEvent",
 			" clone the original event object and dispatch that",
@@ -1211,17 +1247,7 @@
 			"prev",
 			"autoRotateSpeed",
 			"_autoRotateSpeed",
-			"autoRotateSpeed",
-			"controls",
-			"if(options.autoRotate)",
-			"options",
-			"_autoRotateAfter",
-			"_autoRotate_timeout",
-			"autoRotate_Start()",
-			"autoRotate_Start();",
-			"speed",
-			"timeSquare",
-			"phi"
+			"autoRotateSpeed"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1367,8 +1393,102 @@
 	"groups":
 	[
 		{
+			"selected": 2,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "SphereViewer.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10952,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4844,
+								4844
+							]
+						],
+						"settings":
+						{
+							"at_wb_tests_view": false,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2181.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "ProgressiveImgLoader.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3738,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2132,
+								2139
+							]
+						],
+						"settings":
+						{
+							"at_wb_tests_view": false,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 648.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "examples/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2292,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1308,
+								1308
+							]
+						],
+						"settings":
+						{
+							"at_wb_tests_view": false,
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 432.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],

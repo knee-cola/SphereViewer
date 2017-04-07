@@ -36,7 +36,10 @@ Live demo is available on CodePen.io http://codepen.io/knee-cola/pen/vxQYNL
       // overidding the default spinner config
       spinner: {
         groupRadius: 20
-      }
+      },
+
+      // overriding the default THREE.js UV mapping
+      uvMapper: (geometry) => { ... doing some custom UV mapping  }
     };
     
     var picUrls = ['img/sphere/preloader.jpg', 'img/sphere/hd.jpg']
