@@ -3,20 +3,23 @@
 Displays photo spheres created with Ricoh Theta or Google Photosphere app on mobile and desktop browsers.
 
 ## Features
-*customizable through config
-*image preloading for slower connection
-*displays spinner while loading images
-*can hide the triopod by displaying custom logo at the sphere bottom
-*can display user instructions (PNG image)
-*configurable
-*supports vanilla JavaScript and AMD
-*supports UV mapping customization
+* customizable through config
+* image preloading for slower connection
+* displays spinner while loading images
+* can hide the triopod by displaying custom logo at the sphere bottom
+* can display user instructions (PNG image)
+* configurable
+* supports vanilla JavaScript and AMD
+* supports UV mapping customization
 
 ## Dependencies
-SphereViewer was build and tested with Three.js v84
+SphereViewer was build and tested with [Three.js v84](https://threejs.org/)
 
 ## Live Demo
 Live demo is available on CodePen.io http://codepen.io/knee-cola/pen/vxQYNL
+
+## Documentation
+There is none ... you can figure it out from example provided below and [live example at CodePen](http://codepen.io/knee-cola/pen/vxQYNL)
 
 ## Usage example
 
