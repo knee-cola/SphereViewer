@@ -102,7 +102,7 @@ proto.initScene = function() {
 
   this.scene = new THREE_Scene();
 
-  let fieldOfView = 90,
+  var fieldOfView = 90,
       aspectRatio = 1,
       near = 1,
 
