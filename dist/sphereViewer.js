@@ -666,7 +666,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = SphereViewer;
+exports.Viewer = undefined;
 
 var _three = __webpack_require__(/*! three */ 0);
 
@@ -686,8 +686,6 @@ function SphereViewer(imageUrls, config) {
 
   this.isDisposed = false;
   this.config = config = config || {};
-
-  config.showCloseButton = !!config.showCloseButton;
 
   this.initViewport();
   this.initScene();
@@ -715,46 +713,6 @@ function SphereViewer(imageUrls, config) {
    * SphereViewer.js <https://github.com/knee-cola/SphereViewer.js>
    * Released under the MIT license
    * @author Nikola Derežić / https://github.com/knee-cola
-   *
-   * This class is an implementation of photosphere viewer.
-   * It supports spherical images as created by the following cameras/software:
-   *  - Ricoh Theta
-   *  - Google PhotoSphere
-   * 
-   * How to use:
-   * 
-   *    // defining spinner config
-   *    var config = {
-   *      // (if set) the logo will be displayed at the bottom
-   *      // of the sphere, which is usefull for hiding the triopod
-   *      logo:'img/logo.png',
-   *      // (if set) the usage hint is displayed in the center of the screen
-   *      // and is hidden after the user clicks/taps the screen
-   *      hint: isMobile ? 'img/sphere-icon-mobile.png' : 'img/sphere-icon-desktop.png',
-   *      
-   *      // overriding the default control config
-   *      control: {
-   *        autoRotate: true
-   *      },
-   *      
-   *      // overidding the default spinner config
-   *      spinner: {
-   *        groupRadius: 20
-   *      },
-   *      
-   *      // overriding the default THREE.js UV mapping
-   *      uvMapper: (geometry) => { ... doing some custom UV mapping  }
-   *    };
-   *    
-   *    var picUrls = ['img/sphere/preloader.jpg', 'img/sphere/hd.jpg']
-   *    
-   *    // creating a new instance of the viewer
-   *    // ... the viewer will automaticall be appended to <body> and displayed
-   *    var viewer = new SphereViewer(picUrls, controlConfig);
-   *    
-   *    // adding event handlers:
-   *    viewer.addEventListener('close', function() { console.log('sphere closed'); });
-   * 
    */
 ;
 
@@ -775,10 +733,9 @@ proto.initViewport = function () {
   this.container = document.createElement('div');
   this.container.className = 'sphere-container ' + (isMobile ? 'isMobile' : 'isDesktop');
 
-  if (this.config.showCloseButton) {
+  if (this.config.closeButtonHtml) {
     this.closeButton = document.createElement('i');
-    this.closeButton.className = 'cmdCloseSphere material-icons';
-    this.closeButton.innerHTML = 'highlight_off';
+    this.closeButton.innerHTML = this.config.closeButtonHtml;
     this.container.appendChild(this.closeButton);
     // attaching a bound version of the method to the instance
     // > we'll need it to remove event listener
@@ -791,6 +748,7 @@ proto.initViewport = function () {
 
 proto.closeButton_onClick = function () {
   this.dispose();
+  this.dispatchEvent({ type: 'closed' });
 };
 proto.controls_onTap = function (ev) {
   // on first tap - hide the hint
@@ -984,6 +942,8 @@ proto.dispose = function () {
 
   this.loaderEl = this.imgLoader = this.closeButton = this.container = this.renderer = this.container = this.camera = this.scene = this.sphere = this.controls = null;
 }; // proto.dispose = function() {...}
+
+exports.Viewer = SphereViewer;
 
 /***/ })
 /******/ ]);
