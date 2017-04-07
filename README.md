@@ -1,6 +1,6 @@
 # SphereViewer.js
 
-Displays photo spheres created with Ricoh Theta or Google Photosphere app on mobile and desktop browsers.
+Displays photo spheres created with [Ricoh Theta](https://theta360.com/en/) or [Google Street View App](https://play.google.com/store/apps/details?id=com.google.android.street) on mobile and desktop browsers.
 
 ## Features
 * customizable through config
@@ -58,6 +58,16 @@ var config = {
   // overidding the default spinner config
   spinner: {
     groupRadius: 20
+  },
+
+  // Here we can define what the close button should contain
+  // the HTML specified here will be placed inside a <div>
+  // we can the style it as we wish via CSS.
+  // When user clicks/taps the button, the sphere will close
+  // and dispatch 'closed' event
+  // If this param is ommited from config, the close button will not be displayed
+  closeButton: {
+    html: '<i class="cmdCloseSphere material-icons">highlight_off</i>'
   },
 
   // Here we could override the default THREE.js UV mapping, by providing a mapper function

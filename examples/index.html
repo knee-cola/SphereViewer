@@ -14,7 +14,10 @@
   </head>
   <body>
     <script>
-      function cmdShowSphere_onClick(ev) {
+      // starting all up
+      initSphere();
+
+      function initSphere(ev) {
         
         if(ev) {
           ev.target.remove();
@@ -38,26 +41,24 @@
           hint: isMobile ? 'img/sphere-icon-mobile.png' : 'img/sphere-icon-desktop.png',
           control: {
             autoRotate: true, autoRotateSpeed: 2, autoRotateDirection:-1
-          }
+          },
+          // defining HTML for the close button
+          closeButtonHtml: '<i class="cmdCloseSphere material-icons">highlight_off</i>'
         };
 
         var sphere = new SphereViewer.Viewer(imageUrls, config);
 
-        sphere.addEventListener('close', showButton);
+        sphere.addEventListener('closed', function() {
+          // after the sphere is closed, display a button for showing the sphere
+          var cmdShowSphere = document.createElement('button');
+          cmdShowSphere.className = 'cmdShowSphere';
+          cmdShowSphere.innerHTML = 'Show Sphere';
+          cmdShowSphere.addEventListener('click', initSphere)
+
+          document.getElementsByTagName('body')[0].appendChild(cmdShowSphere);
+        });
       }
 
-      function showButton() {
-
-        var cmdShowSphere = document.createElement('button');
-        cmdShowSphere.className = 'cmdShowSphere';
-        cmdShowSphere.innerHTML = 'Show Sphere';
-        cmdShowSphere.addEventListener('click', cmdShowSphere_onClick)
-
-        document.getElementsByTagName('body')[0].appendChild(cmdShowSphere);
-      }
-
-
-      cmdShowSphere_onClick();
     </script>
   </body>
 </html>
