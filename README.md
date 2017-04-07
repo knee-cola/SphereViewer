@@ -12,6 +12,12 @@ Displays photo spheres created with Ricoh Theta or Google Photosphere app on mob
 * supports vanilla JavaScript and AMD
 * supports UV mapping customization
 
+## Live Demo
+Live demo is available on CodePen.io http://codepen.io/knee-cola/pen/vxQYNL
+
+## Documentation
+There is none ... you can figure it out from example provided below and [live example at CodePen](http://codepen.io/knee-cola/pen/vxQYNL)
+
 ## Installation
 ### NPM installation
 To install it via NPM run:
@@ -19,11 +25,11 @@ To install it via NPM run:
 npm i -D --save-dev sphere-viewer
 ```
 ### Old school linking from HTML
-If you use the Vanilla JavaScript, link the lib in from HTML like this:
+If you use the Vanilla JavaScript, link the lib in from HTML like this (the code bellow includes links to dependencies):
 ```html
   <script src="//code.jquery.com/jquery-3.2.1.slim.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
-  <script type="text/javascript" src="//cdn.rawgit.com/knee-cola/SphereViewer/7444271e/dist/sphereViewer.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+  <script type="text/javascript" src="//cdn.rawgit.com/knee-cola/SphereViewer/13f4e3aa/dist/sphereViewer.min.js"></script>
 ```
 If you want to store files localy on yout server, you can download the minified file from [GitHub repository](https://github.com/knee-cola/SphereViewer/blob/master/dist/sphereViewer.min.js).
 
@@ -31,12 +37,6 @@ If you want to store files localy on yout server, you can download the minified 
 SphereViewer was build with:
 * [Three.js](https://threejs.org/) v84
 * [jQuery](https://www.npmjs.com/package/jquery-slim)
-
-## Live Demo
-Live demo is available on CodePen.io http://codepen.io/knee-cola/pen/vxQYNL
-
-## Documentation
-There is none ... you can figure it out from example provided below and [live example at CodePen](http://codepen.io/knee-cola/pen/vxQYNL)
 
 ## Usage example
 
