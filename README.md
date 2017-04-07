@@ -29,7 +29,7 @@ If you use the Vanilla JavaScript, link the lib in from HTML like this (the code
 ```html
   <script src="//code.jquery.com/jquery-3.2.1.slim.js"></script>
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
-  <script type="text/javascript" src="//cdn.rawgit.com/knee-cola/SphereViewer/13f4e3aa/dist/sphereViewer.min.js"></script>
+  <script type="text/javascript" src="//cdn.rawgit.com/knee-cola/SphereViewer/b2a8adf3/dist/sphereViewer.min.js"></script>
 ```
 If you want to store files localy on yout server, you can download the minified file from [GitHub repository](https://github.com/knee-cola/SphereViewer/blob/master/dist/sphereViewer.min.js).
 
