@@ -29,10 +29,16 @@ module.exports = {
     externals: {
     	// this means that SphereViewer expects a dependency named "three" to be available in the consumer's environment.
         "three": {
-            three: "three",
+            commonjs: "three",
             commonjs2: "three",
             amd: "three",
             root: "THREE"
+        },
+        "jquery-slim": {
+            commonjs: "jquery-slim",
+            commonjs2: "jquery-slim",
+            amd: "jquery-slim",
+            root: "$"
         }
     },
 	module: {

@@ -60,6 +60,7 @@ import {
 import {SphereControls} from 'sphereControls'
 import {ProgressiveImgLoader} from 'progressiveImgLoader'
 import {BallSpinnerLoader} from 'ballSpinnerLoader'
+import $ from 'jquery-slim'
 
 export function Viewer(imageUrls, config) {
 

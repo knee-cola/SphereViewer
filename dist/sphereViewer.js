@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("three"));
+		module.exports = factory(require("three"), require("jquery-slim"));
 	else if(typeof define === 'function' && define.amd)
-		define(["three"], factory);
+		define(["three", "jquery-slim"], factory);
 	else if(typeof exports === 'object')
-		exports["SphereViewer"] = factory(require(undefined));
+		exports["SphereViewer"] = factory(require("three"), require("jquery-slim"));
 	else
-		root["SphereViewer"] = factory(root["THREE"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__) {
+		root["SphereViewer"] = factory(root["THREE"], root["$"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_6__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -80,9 +80,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /* unknown exports provided */
 /* all exports used */
-/*!***********************************************************************************!*\
-  !*** external {"three":"three","commonjs2":"three","amd":"three","root":"THREE"} ***!
-  \***********************************************************************************/
+/*!**************************************************************************************!*\
+  !*** external {"commonjs":"three","commonjs2":"three","amd":"three","root":"THREE"} ***!
+  \**************************************************************************************/
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
@@ -665,51 +665,12 @@ var _progressiveImgLoader = __webpack_require__(/*! progressiveImgLoader */ 2);
 
 var _ballSpinnerLoader = __webpack_require__(/*! ballSpinnerLoader */ 1);
 
-/**
- * SphereViewer.js <https://github.com/knee-cola/SphereViewer.js>
- * Released under the MIT license
- * @author Nikola Derežić / https://github.com/knee-cola
- *
- * This class is an implementation of photosphere viewer.
- * It supports spherical images as created by the following cameras/software:
- *  - Ricoh Theta
- *  - Google PhotoSphere
- * 
- * How to use:
- * 
- *    // defining spinner config
- *    var config = {
- *      // (if set) the logo will be displayed at the bottom
- *      // of the sphere, which is usefull for hiding the triopod
- *      logo:'img/logo.png',
- *      // (if set) the usage hint is displayed in the center of the screen
- *      // and is hidden after the user clicks/taps the screen
- *      hint: isMobile ? 'img/sphere-icon-mobile.png' : 'img/sphere-icon-desktop.png',
- *      
- *      // overriding the default control config
- *      control: {
- *        autoRotate: true
- *      },
- *      
- *      // overidding the default spinner config
- *      spinner: {
- *        groupRadius: 20
- *      },
- *      
- *      // overriding the default THREE.js UV mapping
- *      uvMapper: (geometry) => { ... doing some custom UV mapping  }
- *    };
- *    
- *    var picUrls = ['img/sphere/preloader.jpg', 'img/sphere/hd.jpg']
- *    
- *    // creating a new instance of the viewer
- *    // ... the viewer will automaticall be appended to <body> and displayed
- *    var viewer = new SphereViewer.Viewer(picUrls, controlConfig);
- *    
- *    // adding event handlers:
- *    viewer.addEventListener('close', function() { console.log('sphere closed'); });
- * 
- */
+var _jquerySlim = __webpack_require__(/*! jquery-slim */ 6);
+
+var _jquerySlim2 = _interopRequireDefault(_jquerySlim);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function Viewer(imageUrls, config) {
 
   this.isDisposed = false;
@@ -739,7 +700,52 @@ function Viewer(imageUrls, config) {
   window.setTimeout(this.onResize, 1);
 
   this.render();
-};
+} /**
+   * SphereViewer.js <https://github.com/knee-cola/SphereViewer.js>
+   * Released under the MIT license
+   * @author Nikola Derežić / https://github.com/knee-cola
+   *
+   * This class is an implementation of photosphere viewer.
+   * It supports spherical images as created by the following cameras/software:
+   *  - Ricoh Theta
+   *  - Google PhotoSphere
+   * 
+   * How to use:
+   * 
+   *    // defining spinner config
+   *    var config = {
+   *      // (if set) the logo will be displayed at the bottom
+   *      // of the sphere, which is usefull for hiding the triopod
+   *      logo:'img/logo.png',
+   *      // (if set) the usage hint is displayed in the center of the screen
+   *      // and is hidden after the user clicks/taps the screen
+   *      hint: isMobile ? 'img/sphere-icon-mobile.png' : 'img/sphere-icon-desktop.png',
+   *      
+   *      // overriding the default control config
+   *      control: {
+   *        autoRotate: true
+   *      },
+   *      
+   *      // overidding the default spinner config
+   *      spinner: {
+   *        groupRadius: 20
+   *      },
+   *      
+   *      // overriding the default THREE.js UV mapping
+   *      uvMapper: (geometry) => { ... doing some custom UV mapping  }
+   *    };
+   *    
+   *    var picUrls = ['img/sphere/preloader.jpg', 'img/sphere/hd.jpg']
+   *    
+   *    // creating a new instance of the viewer
+   *    // ... the viewer will automaticall be appended to <body> and displayed
+   *    var viewer = new SphereViewer.Viewer(picUrls, controlConfig);
+   *    
+   *    // adding event handlers:
+   *    viewer.addEventListener('close', function() { console.log('sphere closed'); });
+   * 
+   */
+;
 
 var proto = Viewer.prototype = Object.create(_three.EventDispatcher.prototype);
 
@@ -747,7 +753,7 @@ proto.initViewport = function () {
 
   var nativeW = window.devicePixelRatio * window.screen.availWidth,
       scale = 1 / window.devicePixelRatio,
-      viewportMeta = $('head meta[name="viewport"]');
+      viewportMeta = (0, _jquerySlim2.default)('head meta[name="viewport"]');
 
   this.originalViewPortMeta = viewportMeta.attr('content');
   viewportMeta.attr('content', 'initial-scale=' + scale + ', maximum-scale=' + scale + ', user-scalable=0');
@@ -963,7 +969,7 @@ proto.dispose = function () {
   this.container.remove();
 
   // restoring original viewport meta
-  $('head meta[name="viewport"]').attr('content', this.originalViewPortMeta);
+  (0, _jquerySlim2.default)('head meta[name="viewport"]').attr('content', this.originalViewPortMeta);
 
   this.loaderEl = this.imgLoader = this.closeButton = this.container = this.renderer = this.container = this.camera = this.scene = this.sphere = this.controls = null;
 }; // proto.dispose = function() {...}
@@ -1019,6 +1025,17 @@ Object.defineProperty(exports, 'ProgressiveImgLoader', {
     return _progressiveImgLoader.ProgressiveImgLoader;
   }
 });
+
+/***/ }),
+/* 6 */
+/* unknown exports provided */
+/* all exports used */
+/*!****************************************************************************************************!*\
+  !*** external {"commonjs":"jquery-slim","commonjs2":"jquery-slim","amd":"jquery-slim","root":"$"} ***!
+  \****************************************************************************************************/
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
 
 /***/ })
 /******/ ]);

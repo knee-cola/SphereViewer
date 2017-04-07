@@ -12,8 +12,25 @@ Displays photo spheres created with Ricoh Theta or Google Photosphere app on mob
 * supports vanilla JavaScript and AMD
 * supports UV mapping customization
 
+## Installation
+### NPM installation
+To install it via NPM run:
+```
+npm i -D --save-dev sphere-viewer
+```
+### Old school linking from HTML
+If you use the Vanilla JavaScript, link the lib in from HTML like this:
+```html
+  <script src="//code.jquery.com/jquery-3.2.1.slim.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+  <script type="text/javascript" src="//cdn.rawgit.com/knee-cola/SphereViewer/7444271e/dist/sphereViewer.min.js"></script>
+```
+If you want to store files localy on yout server, you can download the minified file from [GitHub repository](https://github.com/knee-cola/SphereViewer/blob/master/dist/sphereViewer.min.js).
+
 ## Dependencies
-SphereViewer was build and tested with [Three.js v84](https://threejs.org/)
+SphereViewer was build with:
+* [Three.js](https://threejs.org/) v84
+* [jQuery](https://www.npmjs.com/package/jquery-slim)
 
 ## Live Demo
 Live demo is available on CodePen.io http://codepen.io/knee-cola/pen/vxQYNL
