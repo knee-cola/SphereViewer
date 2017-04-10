@@ -1,12 +1,12 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("three"), require("jquery-slim"));
+		module.exports = factory(require("THREE"), require("jquery"));
 	else if(typeof define === 'function' && define.amd)
-		define(["three", "jquery-slim"], factory);
+		define(["THREE", "jquery"], factory);
 	else if(typeof exports === 'object')
-		exports["SphereViewer"] = factory(require("three"), require("jquery-slim"));
+		exports["SphereViewer"] = factory(require("THREE"), require("jquery"));
 	else
-		root["SphereViewer"] = factory(root["THREE"], root["$"]);
+		root["SphereViewer"] = factory(root["THREE"], root["jquery"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_4__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -80,9 +80,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /* unknown exports provided */
 /* all exports used */
-/*!**************************************************************************************!*\
-  !*** external {"commonjs":"three","commonjs2":"three","amd":"three","root":"THREE"} ***!
-  \**************************************************************************************/
+/*!************************!*\
+  !*** external "THREE" ***!
+  \************************/
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
@@ -644,9 +644,9 @@ exports.SphereControls = SphereControls;
 /* 4 */
 /* unknown exports provided */
 /* all exports used */
-/*!****************************************************************************************************!*\
-  !*** external {"commonjs":"jquery-slim","commonjs2":"jquery-slim","amd":"jquery-slim","root":"$"} ***!
-  \****************************************************************************************************/
+/*!*************************!*\
+  !*** external "jquery" ***!
+  \*************************/
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
@@ -670,9 +670,9 @@ exports.Viewer = undefined;
 
 var _three = __webpack_require__(/*! three */ 0);
 
-var _jquerySlim = __webpack_require__(/*! jquery-slim */ 4);
+var _jquery = __webpack_require__(/*! jquery */ 4);
 
-var _jquerySlim2 = _interopRequireDefault(_jquerySlim);
+var _jquery2 = _interopRequireDefault(_jquery);
 
 var _sphereControls = __webpack_require__(/*! ./sphereControls */ 3);
 
@@ -722,7 +722,7 @@ proto.initViewport = function () {
 
   var nativeW = window.devicePixelRatio * window.screen.availWidth,
       scale = 1 / window.devicePixelRatio,
-      viewportMeta = (0, _jquerySlim2.default)('head meta[name="viewport"]');
+      viewportMeta = (0, _jquery2.default)('head meta[name="viewport"]');
 
   this.originalViewPortMeta = viewportMeta.attr('content');
   viewportMeta.attr('content', 'initial-scale=' + scale + ', maximum-scale=' + scale + ', user-scalable=0');
@@ -938,7 +938,7 @@ proto.dispose = function () {
   this.container.remove();
 
   // restoring original viewport meta
-  (0, _jquerySlim2.default)('head meta[name="viewport"]').attr('content', this.originalViewPortMeta);
+  (0, _jquery2.default)('head meta[name="viewport"]').attr('content', this.originalViewPortMeta);
 
   this.loaderEl = this.imgLoader = this.closeButton = this.container = this.renderer = this.container = this.camera = this.scene = this.sphere = this.controls = null;
 }; // proto.dispose = function() {...}

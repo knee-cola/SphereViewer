@@ -1,6 +1,6 @@
 {
   "name": "sphere-viewer",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A simple JavaScript library for displaying spherical images on desktop and mobile browsers",
   "main": "dist/sphere-viewer.js",
   "module": "src/sphereViewer.js",
@@ -8,9 +8,9 @@
     "example": "examples"
   },
   "scripts": {
-    "dev": "webpack -d --devtool source-map --watch",
-    "prod-cmd": "set NODE_ENV=production&& webpack -p",
-    "prod": "NODE_ENV=production webpack -p"
+    "dev": "set NODE_ENV=dev&& webpack -d --devtool source-map",
+    "dev-watch": "set NODE_ENV=dev&&webpack -d --devtool source-map --watch",
+    "prod": "set NODE_ENV=production&& webpack --optimize-minimize"
   },
   "repository": {
     "type": "git",

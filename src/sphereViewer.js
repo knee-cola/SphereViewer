@@ -16,7 +16,7 @@ import {
     FrontSide as THREE_FrontSide,
     BackSide as THREE_BackSide
   } from 'three'
-import $ from 'jquery-slim'
+import $ from 'jquery'
 
 import {SphereControls} from './sphereControls'
 import {ProgressiveImgLoader} from './progressiveImgLoader'
