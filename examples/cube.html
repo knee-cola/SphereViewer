@@ -41,6 +41,8 @@
           //       before it's applied onto a cube (although direct loading of rectilinear images
           //       is not yet supported)
           textureTarget: 'cube',
+          // run multiple web workers in paralel
+          multiWorker: true,
 
           hint: isMobile ? 'img/sphere-icon-mobile.png' : 'img/sphere-icon-desktop.png',
           control: {

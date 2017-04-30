@@ -123,7 +123,8 @@ proto.initScene = function() {
 
 proto.initCube = function(imgUrl) {
 	
-	var cubeSize = 100;
+	var cubeSize = 100,
+		config = this.config;
 	
 	// (1) create 3D objects + use Canvas as texture
 	var canvases = [0,1,2,3,4,5].map(function(el) {
@@ -138,26 +139,15 @@ proto.initCube = function(imgUrl) {
 
 	var materials = canvases.map(function(canvas) {
 		return(new THREE_MeshBasicMaterial({
-			// color: 0xff00ff,
-			// side: THREE_DoubleSide
 			map: new THREE_Texture(canvas),
-			// side: THREE_BackSide,
-			// side: THREE_FrontSide // displaying the texture on the outer side of the sphere });
 		}));
 	});
-//materials = new THREE_MeshBasicMaterial({
-//			color: 0xff00aa
-//			// map: new THREE_Texture(canvas),
-//			// side: THREE_BackSide,
-//			// side: THREE_FrontSide // displaying the texture on the outer side of the sphere });
-//		});
+
 	this.mesh = new THREE_Mesh( new THREE_CubeGeometry( cubeSize, cubeSize, cubeSize ), materials );
 	this.mesh.scale.x = -1; // flipping sphere inside-out - not the texture is rendered on the inner side
 	this.scene.add(this.mesh);
 
 	// this.showLoader();
-	
-//	return;
 
 	var imgObj=new Image();
 
@@ -184,7 +174,6 @@ proto.initCube = function(imgUrl) {
 		var srcImg = inCtx.getImageData(0,0,srcWidth,srcHeight);
 		var imgOut = new ImageData(faceWidth,faceHeight); 
 		
-		var w = new Worker("../src/equi2recti-worker.js");
 		var tileIx2canvasIx = {
 			0:5, // back
 			1:1, // left
@@ -194,10 +183,8 @@ proto.initCube = function(imgUrl) {
 			5:3 // bottom
 		};
 
-		w.onmessage = function(event) {
+		var onWorkerMessage = function(event) {
 		// (4) as each image is converted apply it to canvas used as texture
-
-			console.log('w.onmessage');
 			
 			var faceIx = event.data.faceIx,
 				canvasIx = tileIx2canvasIx[faceIx],
@@ -213,11 +200,29 @@ proto.initCube = function(imgUrl) {
 			console.log('done '+event.data.faceIx);
 		};
 
-		// begin converting the images
-		w.postMessage({
-			srcImg: srcImg,
-			imgOut: imgOut
-		});
+		if(config.multiWorker) {
+			console.log('multiWorker');
+			for(var i=0;i<6;i++) {
+				var w = new Worker("../src/equi2recti-worker.js");
+				w.onmessage = onWorkerMessage;
+
+				// begin converting the images
+				w.postMessage({
+					srcImg: srcImg,
+					imgOut: imgOut,
+					faceIx:i
+				});
+			}
+		} else {
+			var w = new Worker("../src/equi2recti-worker.js");
+			w.onmessage = onWorkerMessage;
+
+			// begin converting the images
+			w.postMessage({
+				srcImg: srcImg,
+				imgOut: imgOut
+			});
+		}
 	}; // imgObj.onload = function() {...}
 
 	// (2) start loading the image
