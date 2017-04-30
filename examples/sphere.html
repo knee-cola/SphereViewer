@@ -7,10 +7,9 @@
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,500italic,700,700italic|Roboto+Mono:400,500,700|Material+Icons">
     <link rel="stylesheet" type="text/css" href="style.css">
-    
     <script src="//code.jquery.com/jquery-3.2.1.slim.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
-    <script src="../dist/sphereViewer.min.js"></script>
+    <script src="../dist/sphereViewer.js"></script>
   </head>
   <body>
     <script>
@@ -38,6 +37,15 @@
         var config = {
           logo:'img/logo.png',
           logoDistance: -30,
+          // The source image projection is "equirectangular"
+          // NOTE A: available options "rectilinear" and "equirectangular".
+          // NOTE B: "rectilinear" is not yet supported
+          imgProjection: 'equirectangular',
+          // Instructing viewer to draw the texture image onto a SPHERE
+          // NOTE A: available values are "sphere" and "cube"
+          // NOTE B: this can be ommited, since this option defaults to "sphere"
+          textureTarget: 'sphere',
+
           hint: isMobile ? 'img/sphere-icon-mobile.png' : 'img/sphere-icon-desktop.png',
           control: {
             autoRotate: true, autoRotateSpeed: 2, autoRotateDirection:-1

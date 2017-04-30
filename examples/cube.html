@@ -1,0 +1,68 @@
+<!DOCTYPE html >
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta charset="utf-8">
+    <title>Premier Locator</title>
+
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,500italic,700,700italic|Roboto+Mono:400,500,700|Material+Icons">
+    <link rel="stylesheet" type="text/css" href="style.css">
+<!--
+    <script src="//code.jquery.com/jquery-3.2.1.slim.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+-->
+    <script src="../dist/sphereViewer.js"></script>
+  </head>
+  <body>
+    <script>
+      // starting all up
+      initSphere();
+
+      function initSphere(ev) {
+        
+        if(ev) {
+          ev.target.remove();
+        }
+
+        var isMobile = window.devicePixelRatio!==1;
+
+        var imageUrls = './img/room.jpg';
+
+        var config = {
+          logo:'img/logo.png',
+          logoDistance: -30,
+          // The source image projection is "equirectangular"
+          // NOTE A: available options "rectilinear" and "equirectangular"
+          //         if this option is not provided, it defaults to "equirectangular"
+          // NOTE B: "rectilinear" is not yet supported
+          imgProjection: 'equirectangular',
+          // Instructing viewer to draw the texture image onto a CUBE (instead of a default SPHERE)
+          // NOTE: equirectangular texture will automatically be converted into a rectilinear
+          //       before it's applied onto a cube (although direct loading of rectilinear images
+          //       is not yet supported)
+          textureTarget: 'cube',
+
+          hint: isMobile ? 'img/sphere-icon-mobile.png' : 'img/sphere-icon-desktop.png',
+          control: {
+            autoRotate: true, autoRotateSpeed: 2, autoRotateDirection:-1
+          },
+          // defining HTML for the close button
+          closeButtonHtml: '<i class="cmdCloseSphere material-icons">highlight_off</i>'
+        };
+
+        var sphere = new SphereViewer.Viewer(imageUrls, config);
+
+        sphere.addEventListener('closed', function() {
+          // after the sphere is closed, display a button for showing the sphere
+          var cmdShowSphere = document.createElement('button');
+          cmdShowSphere.className = 'cmdShowSphere';
+          cmdShowSphere.innerHTML = 'Show Sphere';
+          cmdShowSphere.addEventListener('click', initSphere)
+
+          document.getElementsByTagName('body')[0].appendChild(cmdShowSphere);
+        });
+      }
+
+    </script>
+  </body>
+</html>

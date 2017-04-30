@@ -12,11 +12,15 @@ import {
     Mesh as THREE_Mesh,
     MeshBasicMaterial as THREE_MeshBasicMaterial,
     TextureLoader as THREE_TextureLoader,
+    Texture as THREE_Texture,
     PlaneGeometry as THREE_PlaneGeometry,
+    CubeGeometry as THREE_CubeGeometry,
+    DoubleSide as THREE_DoubleSide,
     FrontSide as THREE_FrontSide,
-    BackSide as THREE_BackSide
+    BackSide as THREE_BackSide,
+    Matrix4 as THREE_Matrix4
   } from 'three'
-import $ from 'jquery'
+import $ from 'jquery-slim'
 
 import {SphereControls} from './sphereControls'
 import {ProgressiveImgLoader} from './progressiveImgLoader'
@@ -24,31 +28,36 @@ import {BallSpinnerLoader} from './ballSpinnerLoader'
 
 function SphereViewer(imageUrls, config) {
 
-  this.isDisposed = false;
-  this.config = config = config || {};
+	this.isDisposed = false;
+	this.config = config = config || {};
 
-  this.initViewport();
-  this.initScene();
-  this.initSphere(imageUrls);
+	this.initViewport();
+	this.initScene();
+	
+	if(this.config.textureTarget === 'cube') {
+		this.initCube(imageUrls);
+	} else {
+		this.initSphere(imageUrls);
+	}
+	
+	if(this.config.logo) {
+		this.initLogo(this.config.logo, this.config.logoDistance===void 0 ? -15 : this.config.logoDistance);
+	}
 
-  if(this.config.logo) {
-    this.initLogo(this.config.logo, this.config.logoDistance===void 0 ? -15 : this.config.logoDistance);
-  }
+	if(this.config.hint) {
+		this.showHint(this.config.hint);
+	}
 
-  if(this.config.hint) {
-    this.showHint(this.config.hint);
-  }
+	this.initControls();
 
-  this.initControls();
+	// attaching a bound version of the method to the instance
+	// > we'll need it to remove event listener
+	this.onResize = this.onResize.bind(this);
 
-  // attaching a bound version of the method to the instance
-  // > we'll need it to remove event listener
-  this.onResize = this.onResize.bind(this);
+	window.addEventListener('resize', this.onResize, false);
+	window.setTimeout(this.onResize, 1);
 
-  window.addEventListener('resize', this.onResize, false);
-  window.setTimeout(this.onResize, 1);
-
-  this.render();
+	this.render();
 };
 
 var proto = SphereViewer.prototype = Object.create( THREE_EventDispatcher.prototype );
@@ -112,6 +121,110 @@ proto.initScene = function() {
   this.scene.add(this.camera);
 }; // proto.initScene = function() {...}
 
+proto.initCube = function(imgUrl) {
+	
+	var cubeSize = 100;
+	
+	// (1) create 3D objects + use Canvas as texture
+	var canvases = [0,1,2,3,4,5].map(function(el) {
+		var canvas = document.createElement("canvas");
+		// making canvas the same size as the image
+		// which will be drawn on it
+		//canvas.width = 1024;
+		//canvas.height = 1024;
+		
+		return(canvas);
+	});
+
+	var materials = canvases.map(function(canvas) {
+		return(new THREE_MeshBasicMaterial({
+			// color: 0xff00ff,
+			// side: THREE_DoubleSide
+			map: new THREE_Texture(canvas),
+			// side: THREE_BackSide,
+			// side: THREE_FrontSide // displaying the texture on the outer side of the sphere });
+		}));
+	});
+//materials = new THREE_MeshBasicMaterial({
+//			color: 0xff00aa
+//			// map: new THREE_Texture(canvas),
+//			// side: THREE_BackSide,
+//			// side: THREE_FrontSide // displaying the texture on the outer side of the sphere });
+//		});
+	this.mesh = new THREE_Mesh( new THREE_CubeGeometry( cubeSize, cubeSize, cubeSize ), materials );
+	this.mesh.scale.x = -1; // flipping sphere inside-out - not the texture is rendered on the inner side
+	this.scene.add(this.mesh);
+
+	// this.showLoader();
+	
+//	return;
+
+	var imgObj=new Image();
+
+	// this needs to be sit in order not to get "Tainted canvases may not be loaded." WebGL error
+	imgObj.crossOrigin = "anonymous";
+	
+	imgObj.onload = function() {
+		
+		console.log('imgObj.onload');
+	
+		var srcWidth = imgObj.width,
+			srcHeight = imgObj.height,
+			faceWidth = srcWidth/4,
+			faceHeight = faceWidth;		
+
+		// (3) when the image is loaded, start the conversion
+		var inCanvas = document.createElement('canvas');
+		inCanvas.width = srcWidth;
+		inCanvas.height = srcHeight;
+
+		var inCtx=inCanvas.getContext("2d");
+		inCtx.drawImage(imgObj,0,0);
+
+		var srcImg = inCtx.getImageData(0,0,srcWidth,srcHeight);
+		var imgOut = new ImageData(faceWidth,faceHeight); 
+		
+		var w = new Worker("../src/equi2recti-worker.js");
+		var tileIx2canvasIx = {
+			0:5, // back
+			1:1, // left
+			2:4, // front
+			3:0, // right
+			4:2, // top
+			5:3 // bottom
+		};
+
+		w.onmessage = function(event) {
+		// (4) as each image is converted apply it to canvas used as texture
+
+			console.log('w.onmessage');
+			
+			var faceIx = event.data.faceIx,
+				canvasIx = tileIx2canvasIx[faceIx],
+				oneCanvas = canvases[canvasIx];
+				
+			oneCanvas.width = faceWidth;
+			oneCanvas.height = faceHeight;
+			
+			oneCanvas.getContext("2d").putImageData(event.data.imgData,0,0);
+			
+			materials[canvasIx].map.needsUpdate = true;
+
+			console.log('done '+event.data.faceIx);
+		};
+
+		// begin converting the images
+		w.postMessage({
+			srcImg: srcImg,
+			imgOut: imgOut
+		});
+	}; // imgObj.onload = function() {...}
+
+	// (2) start loading the image
+	imgObj.src = imgUrl;
+
+}; // proto.initCube = function() {...}
+
 proto.initSphere = function(imageUrls) {
 
   var speherRadius = 100,
@@ -143,7 +256,6 @@ proto.initSphere = function(imageUrls) {
   this.scene.add(this.sphere);
 
   this.showLoader();
-
 }; // proto.initSphere = function(imageUrls) {...}
 
 proto.initLogo = function(logoUrl, logoDistance) {
