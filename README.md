@@ -12,14 +12,15 @@ Displays photo spheres created with [Ricoh Theta](https://theta360.com/en/) or [
 * supports UV mapping customization
 * texture can be provided in three different formats
 	* as spherical image as produced by Ricoh Theta/Google Street View (equirectangular projection)
-	* as serie of separate tile images (rectilinear projection)s
-	* as tile atlas (single image containing all the images)
+	* as serie of separate tile images (rectilinear projection)
+	* as tile atlas (single image containing all the tiles)
+* supports conversion of sphercal textures into a cubical one (equirectangular-2-rectilinear)
 
 ## Live Demo
 Live demo is available on CodePen.io http://codepen.io/knee-cola/pen/vxQYNL
 
 ## Documentation
-There is none ... you can figure it out from provided example files in the **examples** folder. The code inside the HTML files is well documented.
+There is none ... you can figure it out from provided example files in the [**examples** folder @ GitHub](https://github.com/knee-cola/SphereViewer/blob/master/examples/). The code inside the HTML files is well documented.
 
 ## Installation
 ### NPM installation
@@ -38,7 +39,7 @@ If you want to store files localy on yout server, you can download the minified 
 
 ## Dependencies
 SphereViewer was build with:
-* [Three.js](https://threejs.org/) v84
+* [Three.js](https://threejs.org/) v85
 * [jQuery](https://www.npmjs.com/package/jquery-slim)
 
 ## Usage example
