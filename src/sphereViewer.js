@@ -21,14 +21,14 @@ import {
     Matrix4 as THREE_Matrix4
   } from 'three'
 
-import $ from 'jquery-slim'
+import $ from 'jquery'
 
 import {SphereControls} from './sphereControls'
 import {ProgressiveImgLoader} from './progressiveImgLoader'
 import {BallSpinnerLoader} from './ballSpinnerLoader'
 
 function SphereViewer(config) {
-
+console.dir($);
 	this.isDisposed = false;
 	this.config = config = config || {};
 
@@ -187,6 +187,55 @@ proto.loadTiles = function() {
 }; // proto.loadTiles = function() {...}
 
 proto.loadAtlas = function(imgUrl, materials, canvases) {
+
+	var imageObj=new Image();
+
+	var canvases = [0,1,2,3,4,5].map(function(el) {
+		return(document.createElement("canvas"));
+	});
+
+	var materials = canvases.map(function(canvas) {
+		return(new THREE_MeshBasicMaterial({
+			map: new THREE_Texture(canvas),
+		}));
+	});
+	
+	var tile2canvasIx = {
+		right:0,
+		left:1,
+		top:2,
+		bottom:3,
+		front:4,
+		back:5
+	};
+	
+	// if the property is not set, then set the default order
+	var tileOrder = this.config.tileOrder || ['right','left','top','bottom','front','back'];
+
+	// this needs to be set in order not to get "Tainted canvases may not be loaded." WebGL error
+	imageObj.crossOrigin = "anonymous";
+	
+	imageObj.onload = function() {
+		var tileWidth = imageObj.height;
+
+		tileOrder.forEach(function(key) {
+			var ix = tile2canvasIx[key];
+			
+			var canvas = canvases[ix];
+			canvas.height = tileWidth;
+			canvas.width = tileWidth;
+
+			var context = canvas.getContext( '2d' );
+			context.drawImage( imageObj, tileWidth * ix, 0, tileWidth, tileWidth, 0, 0, tileWidth, tileWidth );
+		
+			materials[ix].map.needsUpdate = true;
+		
+		});
+	}; // imgObj.onload = function() {...}
+	
+	imageObj.src = this.config.atlas;
+	
+	return(materials);
 
 }; // proto.loadAtlas = function() {...}
 

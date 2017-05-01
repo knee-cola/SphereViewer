@@ -28,8 +28,8 @@ module.exports = {
 	},
     externals: {
     	// this means that SphereViewer expects a dependency named "three" to be available in the consumer's environment.
-        // "three": "THREE",
-        // "jquery": "jquery"
+        "three": "THREE",
+        "jquery": "$"
     },
 	module: {
 		rules: [
