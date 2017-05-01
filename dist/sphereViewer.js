@@ -683,7 +683,7 @@ var _ballSpinnerLoader = __webpack_require__(/*! ./ballSpinnerLoader */ 1);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function SphereViewer(config) {
-	console.dir(_jquery2.default);
+
 	this.isDisposed = false;
 	this.config = config = config || {};
 
@@ -808,10 +808,14 @@ proto.initCube = function (imgUrl) {
 	this.mesh = new _three.Mesh(new _three.BoxGeometry(cubeSize, cubeSize, cubeSize), materials);
 	this.mesh.scale.x = -1; // flipping sphere inside-out - not the texture is rendered on the inner side
 	this.scene.add(this.mesh);
+
+	this.showLoader();
 }; // proto.initCube = function(imgUrl) {...}
 
 proto.loadTiles = function () {
 
+	var self = this;
+	var loadCounter = 0;
 	var tiles = this.config.tiles;
 	var image_placeholder = document.createElement('canvas');
 
@@ -824,6 +828,10 @@ proto.loadTiles = function () {
 			console.log(tiles[key]);
 			texture.image = img;
 			texture.needsUpdate = true;
+
+			if (++loadCounter === 6) {
+				self.hideLoader();
+			}
 		};
 
 		img.src = tiles[key];
@@ -838,6 +846,7 @@ proto.loadTiles = function () {
 
 proto.loadAtlas = function (imgUrl, materials, canvases) {
 
+	var self = this;
 	var imageObj = new Image();
 
 	var canvases = [0, 1, 2, 3, 4, 5].map(function (el) {
@@ -880,6 +889,8 @@ proto.loadAtlas = function (imgUrl, materials, canvases) {
 
 			materials[ix].map.needsUpdate = true;
 		});
+
+		self.hideLoader();
 	}; // imgObj.onload = function() {...}
 
 	imageObj.src = this.config.atlas;
@@ -945,6 +956,8 @@ proto.equi2recti = function (srcImg, materials, canvases) {
 		5: 3 // bottom
 	};
 
+	var loadCounter = 0;
+
 	var onWorkerMessage = function onWorkerMessage(event) {
 		// (4) as each image is converted apply it to canvas used as texture
 
@@ -958,10 +971,14 @@ proto.equi2recti = function (srcImg, materials, canvases) {
 		oneCanvas.getContext("2d").putImageData(event.data.imgData, 0, 0);
 
 		materials[canvasIx].map.needsUpdate = true;
+
+		if (++loadCounter === 6) {
+			self.hideLoader();
+		}
 	};
 
 	if (self.config.multiWorker) {
-		console.log('multiWorker');
+
 		for (var i = 0; i < 6; i++) {
 			var w = new Worker("../src/equi2recti-worker.js");
 			w.onmessage = onWorkerMessage;
