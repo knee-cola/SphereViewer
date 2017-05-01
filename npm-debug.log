@@ -1,0 +1,123 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/node/bin/node',
+1 verbose cli   '/usr/local/node/bin/npm',
+1 verbose cli   'publish' ]
+2 info using npm@3.10.10
+3 info using node@v6.10.2
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   escapedName: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/root/Web-Server/SphereViewer',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /root/.npm/sphere-viewer/1.1.0/package.tgz not in flight; packing
+9 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+10 info lifecycle sphere-viewer@1.1.0~prepublish: sphere-viewer@1.1.0
+11 silly lifecycle sphere-viewer@1.1.0~prepublish: no script for prepublish, continuing
+12 verbose tar pack [ '/root/.npm/sphere-viewer/1.1.0/package.tgz',
+12 verbose tar pack   '/root/Web-Server/SphereViewer' ]
+13 verbose tarball /root/.npm/sphere-viewer/1.1.0/package.tgz
+14 verbose folder /root/Web-Server/SphereViewer
+15 verbose addLocalTarball adding from inside cache /root/.npm/sphere-viewer/1.1.0/package.tgz
+16 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+17 silly cache afterAdd sphere-viewer@1.1.0
+18 verbose afterAdd /root/.npm/sphere-viewer/1.1.0/package/package.json not in flight; writing
+19 verbose correctMkdir /root/.npm correctMkdir not in flight; initializing
+20 verbose afterAdd /root/.npm/sphere-viewer/1.1.0/package/package.json written
+21 silly publish { name: 'sphere-viewer',
+21 silly publish   version: '1.1.0',
+21 silly publish   description: 'A simple JavaScript library for displaying spherical images on desktop and mobile browsers',
+21 silly publish   main: 'dist/sphere-viewer.js',
+21 silly publish   module: 'src/sphereViewer.js',
+21 silly publish   directories: { example: 'examples' },
+21 silly publish   scripts:
+21 silly publish    { dev: 'set NODE_ENV=dev&& webpack -d --devtool source-map',
+21 silly publish      'dev-watch': 'set NODE_ENV=dev&&webpack -d --devtool source-map --watch',
+21 silly publish      prod: 'set NODE_ENV=production&& webpack --optimize-minimize' },
+21 silly publish   repository:
+21 silly publish    { type: 'git',
+21 silly publish      url: 'git+https://github.com/knee-cola/SphereViewer.git' },
+21 silly publish   keywords: [ 'photosphere' ],
+21 silly publish   author: { name: 'Nikola Derežić', email: 'nikola.derezic@gmail.com' },
+21 silly publish   license: 'MIT',
+21 silly publish   bugs: { url: 'https://github.com/knee-cola/SphereViewer/issues' },
+21 silly publish   homepage: 'https://github.com/knee-cola/SphereViewer#readme',
+21 silly publish   devDependencies:
+21 silly publish    { 'babel-core': '^6.24.0',
+21 silly publish      'babel-loader': '^6.4.1',
+21 silly publish      'babel-preset-env': '^1.3.2',
+21 silly publish      jquery: '^3.2.1',
+21 silly publish      'jquery-slim': '^3.0.0',
+21 silly publish      three: '^0.85.2',
+21 silly publish      'three-canvas-renderer': '^1.0.1',
+21 silly publish      webpack: '^2.3.3' },
+21 silly publish   readme: '# SphereViewer.js\n\nDisplays photo spheres created with [Ricoh Theta](https://theta360.com/en/) or [Google Street View App](https://play.google.com/store/apps/details?id=com.google.android.street) on mobile and desktop browsers.\n\n## Features\n* customizable through config\n* image preloading for slower connection\n* displays spinner while loading images\n* can hide the triopod by displaying custom logo at the sphere bottom\n* can display user instructions (PNG image)\n* supports vanilla JavaScript and AMD\n* supports UV mapping customization\n* texture can be provided in three different formats\n\t* as spherical image as produced by Ricoh Theta/Google Street View (equirectangular projection)\n\t* as serie of separate tile images (rectilinear projection)\n\t* as tile atlas (single image containing all the tiles)\n* supports conversion of sphercal textures into a cubical one (equirectangular-2-rectilinear)\n\n## Live Demo\nLive demo is available on CodePen.io http://codepen.io/knee-cola/pen/vxQYNL\n\n## Documentation\nThere is none ... you can figure it out from provided example files in the [**examples** folder @ GitHub](https://github.com/knee-cola/SphereViewer/blob/master/examples/). The code inside the HTML files is well documented.\n\n## Installation\n### NPM installation\nTo install it via NPM run:\n```\nnpm i -D --save-dev sphere-viewer\n```\n### Old school linking from HTML\nIf you use the Vanilla JavaScript, link the lib in from HTML like this (the code bellow includes links to dependencies):\n```html\n  <script src="//code.jquery.com/jquery-3.2.1.slim.js"></script>\n  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/three.js/85/three.min.js"></script>\n  <script type="text/javascript" src="https://cdn.rawgit.com/knee-cola/SphereViewer/aea7cb88/dist/sphereViewer.min.js"></script>\n```\nIf you want to store files localy on yout server, you can download the minified file from [GitHub repository](https://github.com/knee-cola/SphereViewer/blob/master/dist/sphereViewer.min.js).\n\n## Dependencies\nSphereViewer was build with:\n* [Three.js](https://threejs.org/) v85\n* [jQuery](https://www.npmjs.com/package/jquery-slim)\n\n## Usage example\n\n```javascript\n// defining spinner config\nvar config = {\n  // providing multiple images for the pre-loader\n  sphere: [\'img/sphere/preloader.jpg\', \'img/sphere/hd.jpg\'],\n  \n  // (if set) the logo will be displayed at the bottom\n  // of the sphere, which is usefull for hiding the triopod\n  logo:\'img/logo.png\',\n  \n  // (if set) the usage hint is displayed in the center of the screen\n  // and is hidden after the user clicks/taps the screen\n  hint: isMobile ? \'img/sphere-icon-mobile.png\' : \'img/sphere-icon-desktop.png\',\n  \n  // overriding the default control config\n  control: {\n    autoRotate: true\n  },\n  \n  // overidding the default spinner config\n  spinner: {\n    groupRadius: 20\n  },\n\n  // Here we can define what the close button should contain\n  // the HTML specified here will be placed inside a <div>\n  // we can the style it as we wish via CSS.\n  // When user clicks/taps the button, the sphere will close\n  // and dispatch \'closed\' event\n  // If this param is ommited from config, the close button will not be displayed\n  closeButton: {\n    html: \'<i class="cmdCloseSphere material-icons">highlight_off</i>\'\n  },\n\n  // Here we could override the default THREE.js UV mapping, by providing a mapper function\n  // uvMapper: (geometry) => { ... doing some custom UV mapping ...  }\n};\n\n// creating a new instance of the viewer\n// ... the viewer will automaticall be appended to <body> and displayed\nvar viewer = new SphereViewer.Viewer(config);\n\n// adding event handlers:\nviewer.addEventListener(\'close\', function() { console.log(\'sphere closed\'); });\n```\n## License\nSphereViewer is licensed under the MIT License.\n',
+21 silly publish   readmeFilename: 'README.md',
+21 silly publish   gitHead: '67e8ae1dcdf07ab31de7c2a920a57c7f94eda60b',
+21 silly publish   _id: 'sphere-viewer@1.1.0',
+21 silly publish   _shasum: '3ed8a24181745d505ae6bb75c85d62bcd4e5139b',
+21 silly publish   _from: '.' }
+22 verbose getPublishConfig undefined
+23 silly mapToRegistry name sphere-viewer
+24 silly mapToRegistry using default registry
+25 silly mapToRegistry registry https://registry.npmjs.org/
+26 silly mapToRegistry data Result {
+26 silly mapToRegistry   raw: 'sphere-viewer',
+26 silly mapToRegistry   scope: null,
+26 silly mapToRegistry   escapedName: 'sphere-viewer',
+26 silly mapToRegistry   name: 'sphere-viewer',
+26 silly mapToRegistry   rawSpec: '',
+26 silly mapToRegistry   spec: 'latest',
+26 silly mapToRegistry   type: 'tag' }
+27 silly mapToRegistry uri https://registry.npmjs.org/sphere-viewer
+28 verbose publish registryBase https://registry.npmjs.org/
+29 silly publish uploading /root/.npm/sphere-viewer/1.1.0/package.tgz
+30 verbose request uri https://registry.npmjs.org/sphere-viewer
+31 verbose request sending authorization for write operation
+32 info attempt registry request try #1 at 11:51:35 PM
+33 verbose request using bearer token for auth
+34 verbose request id 024ac928d37b214f
+35 http request PUT https://registry.npmjs.org/sphere-viewer
+36 http 403 https://registry.npmjs.org/sphere-viewer
+37 verbose headers { 'content-type': 'application/json',
+37 verbose headers   'cache-control': 'max-age=300',
+37 verbose headers   'content-length': '95',
+37 verbose headers   'accept-ranges': 'bytes',
+37 verbose headers   date: 'Mon, 01 May 2017 22:49:13 GMT',
+37 verbose headers   via: '1.1 varnish',
+37 verbose headers   connection: 'keep-alive',
+37 verbose headers   'x-served-by': 'cache-hhn1548-HHN',
+37 verbose headers   'x-cache': 'MISS',
+37 verbose headers   'x-cache-hits': '0',
+37 verbose headers   'x-timer': 'S1493678937.860441,VS0,VE16215',
+37 verbose headers   vary: 'Accept-Encoding' }
+38 verbose request invalidating /root/.npm/registry.npmjs.org/sphere-viewer on PUT
+39 error publish Failed PUT 403
+40 verbose stack Error: "You cannot publish over the previously published version 1.1.0." : sphere-viewer
+40 verbose stack     at makeError (/usr/local/node/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:302:12)
+40 verbose stack     at CachingRegistryClient.<anonymous> (/usr/local/node/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:290:14)
+40 verbose stack     at Request._callback (/usr/local/node/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:210:14)
+40 verbose stack     at Request.self.callback (/usr/local/node/lib/node_modules/npm/node_modules/request/request.js:187:22)
+40 verbose stack     at emitTwo (events.js:106:13)
+40 verbose stack     at Request.emit (events.js:191:7)
+40 verbose stack     at Request.<anonymous> (/usr/local/node/lib/node_modules/npm/node_modules/request/request.js:1048:10)
+40 verbose stack     at emitOne (events.js:96:13)
+40 verbose stack     at Request.emit (events.js:188:7)
+40 verbose stack     at IncomingMessage.<anonymous> (/usr/local/node/lib/node_modules/npm/node_modules/request/request.js:969:12)
+41 verbose statusCode 403
+42 verbose pkgid sphere-viewer
+43 verbose cwd /root/Web-Server/SphereViewer
+44 error Linux 3.14.55
+45 error argv "/usr/local/node/bin/node" "/usr/local/node/bin/npm" "publish"
+46 error node v6.10.2
+47 error npm  v3.10.10
+48 error code E403
+49 error "You cannot publish over the previously published version 1.1.0." : sphere-viewer
+50 error If you need help, you may report this error at:
+50 error     <https://github.com/npm/npm/issues>
+51 verbose exit [ 1, true ]
