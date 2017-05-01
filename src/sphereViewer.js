@@ -14,12 +14,13 @@ import {
     TextureLoader as THREE_TextureLoader,
     Texture as THREE_Texture,
     PlaneGeometry as THREE_PlaneGeometry,
-    CubeGeometry as THREE_CubeGeometry,
+    BoxGeometry as THREE_BoxGeometry,
     DoubleSide as THREE_DoubleSide,
     FrontSide as THREE_FrontSide,
     BackSide as THREE_BackSide,
     Matrix4 as THREE_Matrix4
   } from 'three'
+
 import $ from 'jquery-slim'
 
 import {SphereControls} from './sphereControls'
@@ -123,18 +124,11 @@ proto.initScene = function() {
 
 proto.initCube = function(imgUrl) {
 	
-	var cubeSize = 100,
-		config = this.config;
+	var cubeSize = 100;
 	
 	// (1) create 3D objects + use Canvas as texture
 	var canvases = [0,1,2,3,4,5].map(function(el) {
-		var canvas = document.createElement("canvas");
-		// making canvas the same size as the image
-		// which will be drawn on it
-		//canvas.width = 1024;
-		//canvas.height = 1024;
-		
-		return(canvas);
+		return(document.createElement("canvas"));
 	});
 
 	var materials = canvases.map(function(canvas) {
@@ -143,12 +137,36 @@ proto.initCube = function(imgUrl) {
 		}));
 	});
 
-	this.mesh = new THREE_Mesh( new THREE_CubeGeometry( cubeSize, cubeSize, cubeSize ), materials );
+	this.mesh = new THREE_Mesh( new THREE_BoxGeometry( cubeSize, cubeSize, cubeSize ), materials );
 	this.mesh.scale.x = -1; // flipping sphere inside-out - not the texture is rendered on the inner side
 	this.scene.add(this.mesh);
 
 	// this.showLoader();
+	
+	switch(this.config.imgProjection) {
+		case 'tiles':
+			this.loadTiles(imgUrl, materials, canvases);
+			break;
+		case 'atlas':
+			this.loadAtlas(imgUrl, materials, canvases);
+			break;
+		case 'equi':
+			this.loadEqui(imgUrl, materials, canvases);
+			break;
+	
+	}
+}; // proto.initCube = function(imgUrl) {...}
 
+proto.loadTiles = function(imgUrl, materials, canvases) {
+
+}; // proto.loadTiles = function() {...}
+proto.loadAtlas = function(imgUrl, materials, canvases) {
+
+}; // proto.loadTiles = function() {...}
+
+proto.loadEqui = function(imgUrl, materials, canvases) {
+	var self = this;
+	
 	var imgObj=new Image();
 
 	// this needs to be sit in order not to get "Tainted canvases may not be loaded." WebGL error
@@ -156,13 +174,9 @@ proto.initCube = function(imgUrl) {
 	
 	imgObj.onload = function() {
 		
-		console.log('imgObj.onload');
-	
 		var srcWidth = imgObj.width,
-			srcHeight = imgObj.height,
-			faceWidth = srcWidth/4,
-			faceHeight = faceWidth;		
-
+			srcHeight = imgObj.height;
+			
 		// (3) when the image is loaded, start the conversion
 		var inCanvas = document.createElement('canvas');
 		inCanvas.width = srcWidth;
@@ -172,63 +186,71 @@ proto.initCube = function(imgUrl) {
 		inCtx.drawImage(imgObj,0,0);
 
 		var srcImg = inCtx.getImageData(0,0,srcWidth,srcHeight);
-		var imgOut = new ImageData(faceWidth,faceHeight); 
 		
-		var tileIx2canvasIx = {
-			0:5, // back
-			1:1, // left
-			2:4, // front
-			3:0, // right
-			4:2, // top
-			5:3 // bottom
-		};
+		self.equi2recti(srcImg, materials, canvases)
 
-		var onWorkerMessage = function(event) {
-		// (4) as each image is converted apply it to canvas used as texture
+	}; // imgObj.onload = function() {...}
+
+	// (2) start loading the image
+	imgObj.src = imgUrl;
+
+}; // proto.loadEqui = function() {...}
+
+proto.equi2recti = function(srcImg, materials, canvases) {
+
+	var self = this,
+		faceSize=srcImg.width/4;
+
+	var imgOut = new ImageData(faceSize, faceSize); 
+
+	var tileIx2canvasIx = {
+		0:5, // back
+		1:1, // left
+		2:4, // front
+		3:0, // right
+		4:2, // top
+		5:3 // bottom
+	};
+
+	var onWorkerMessage = function(event) {
+	// (4) as each image is converted apply it to canvas used as texture
+		
+		var faceIx = event.data.faceIx,
+			canvasIx = tileIx2canvasIx[faceIx],
+			oneCanvas = canvases[canvasIx];
 			
-			var faceIx = event.data.faceIx,
-				canvasIx = tileIx2canvasIx[faceIx],
-				oneCanvas = canvases[canvasIx];
-				
-			oneCanvas.width = faceWidth;
-			oneCanvas.height = faceHeight;
-			
-			oneCanvas.getContext("2d").putImageData(event.data.imgData,0,0);
-			
-			materials[canvasIx].map.needsUpdate = true;
+		oneCanvas.width = faceSize;
+		oneCanvas.height = faceSize;
+		
+		oneCanvas.getContext("2d").putImageData(event.data.imgData,0,0);
+		
+		materials[canvasIx].map.needsUpdate = true;
+	};
 
-			console.log('done '+event.data.faceIx);
-		};
-
-		if(config.multiWorker) {
-			console.log('multiWorker');
-			for(var i=0;i<6;i++) {
-				var w = new Worker("../src/equi2recti-worker.js");
-				w.onmessage = onWorkerMessage;
-
-				// begin converting the images
-				w.postMessage({
-					srcImg: srcImg,
-					imgOut: imgOut,
-					faceIx:i
-				});
-			}
-		} else {
+	if(self.config.multiWorker) {
+		console.log('multiWorker');
+		for(var i=0;i<6;i++) {
 			var w = new Worker("../src/equi2recti-worker.js");
 			w.onmessage = onWorkerMessage;
 
 			// begin converting the images
 			w.postMessage({
 				srcImg: srcImg,
-				imgOut: imgOut
+				imgOut: imgOut,
+				faceIx:i
 			});
 		}
-	}; // imgObj.onload = function() {...}
+	} else {
+		var w = new Worker("../src/equi2recti-worker.js");
+		w.onmessage = onWorkerMessage;
 
-	// (2) start loading the image
-	imgObj.src = imgUrl;
-
-}; // proto.initCube = function() {...}
+		// begin converting the images
+		w.postMessage({
+			srcImg: srcImg,
+			imgOut: imgOut
+		});
+	}
+} // proto.equi2recti = function(srcImg, materials, canvases) {...}
 
 proto.initSphere = function(imageUrls) {
 

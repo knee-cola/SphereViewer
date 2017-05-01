@@ -78,6 +78,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
+/* exports provided: WebGLRenderTargetCube, WebGLRenderTarget, WebGLRenderer, ShaderLib, UniformsLib, UniformsUtils, ShaderChunk, FogExp2, Fog, Scene, LensFlare, Sprite, LOD, SkinnedMesh, Skeleton, Bone, Mesh, LineSegments, LineLoop, Line, Points, Group, VideoTexture, DataTexture, CompressedTexture, CubeTexture, CanvasTexture, DepthTexture, Texture, CompressedTextureLoader, DataTextureLoader, CubeTextureLoader, TextureLoader, ObjectLoader, MaterialLoader, BufferGeometryLoader, DefaultLoadingManager, LoadingManager, JSONLoader, ImageLoader, FontLoader, FileLoader, Loader, Cache, AudioLoader, SpotLightShadow, SpotLight, PointLight, RectAreaLight, HemisphereLight, DirectionalLightShadow, DirectionalLight, AmbientLight, LightShadow, Light, StereoCamera, PerspectiveCamera, OrthographicCamera, CubeCamera, ArrayCamera, Camera, AudioListener, PositionalAudio, AudioContext, AudioAnalyser, Audio, VectorKeyframeTrack, StringKeyframeTrack, QuaternionKeyframeTrack, NumberKeyframeTrack, ColorKeyframeTrack, BooleanKeyframeTrack, PropertyMixer, PropertyBinding, KeyframeTrack, AnimationUtils, AnimationObjectGroup, AnimationMixer, AnimationClip, Uniform, InstancedBufferGeometry, BufferGeometry, GeometryIdCount, Geometry, InterleavedBufferAttribute, InstancedInterleavedBuffer, InterleavedBuffer, InstancedBufferAttribute, Face3, Object3D, Raycaster, Layers, EventDispatcher, Clock, QuaternionLinearInterpolant, LinearInterpolant, DiscreteInterpolant, CubicInterpolant, Interpolant, Triangle, Math, Spherical, Cylindrical, Plane, Frustum, Sphere, Ray, Matrix4, Matrix3, Box3, Box2, Line3, Euler, Vector4, Vector3, Vector2, Quaternion, Color, MorphBlendMesh, ImmediateRenderObject, VertexNormalsHelper, SpotLightHelper, SkeletonHelper, PointLightHelper, RectAreaLightHelper, HemisphereLightHelper, GridHelper, PolarGridHelper, FaceNormalsHelper, DirectionalLightHelper, CameraHelper, BoxHelper, ArrowHelper, AxisHelper, CatmullRomCurve3, CubicBezierCurve3, QuadraticBezierCurve3, LineCurve3, ArcCurve, EllipseCurve, SplineCurve, CubicBezierCurve, QuadraticBezierCurve, LineCurve, Shape, Path, ShapePath, Font, CurvePath, Curve, ShapeUtils, SceneUtils, WireframeGeometry, ParametricGeometry, ParametricBufferGeometry, TetrahedronGeometry, TetrahedronBufferGeometry, OctahedronGeometry, OctahedronBufferGeometry, IcosahedronGeometry, IcosahedronBufferGeometry, DodecahedronGeometry, DodecahedronBufferGeometry, PolyhedronGeometry, PolyhedronBufferGeometry, TubeGeometry, TubeBufferGeometry, TorusKnotGeometry, TorusKnotBufferGeometry, TorusGeometry, TorusBufferGeometry, TextGeometry, TextBufferGeometry, SphereGeometry, SphereBufferGeometry, RingGeometry, RingBufferGeometry, PlaneGeometry, PlaneBufferGeometry, LatheGeometry, LatheBufferGeometry, ShapeGeometry, ShapeBufferGeometry, ExtrudeGeometry, ExtrudeBufferGeometry, EdgesGeometry, ConeGeometry, ConeBufferGeometry, CylinderGeometry, CylinderBufferGeometry, CircleGeometry, CircleBufferGeometry, BoxGeometry, BoxBufferGeometry, ShadowMaterial, SpriteMaterial, RawShaderMaterial, ShaderMaterial, PointsMaterial, MeshPhysicalMaterial, MeshStandardMaterial, MeshPhongMaterial, MeshToonMaterial, MeshNormalMaterial, MeshLambertMaterial, MeshDepthMaterial, MeshBasicMaterial, LineDashedMaterial, LineBasicMaterial, Material, Float64BufferAttribute, Float32BufferAttribute, Uint32BufferAttribute, Int32BufferAttribute, Uint16BufferAttribute, Int16BufferAttribute, Uint8ClampedBufferAttribute, Uint8BufferAttribute, Int8BufferAttribute, BufferAttribute, REVISION, MOUSE, CullFaceNone, CullFaceBack, CullFaceFront, CullFaceFrontBack, FrontFaceDirectionCW, FrontFaceDirectionCCW, BasicShadowMap, PCFShadowMap, PCFSoftShadowMap, FrontSide, BackSide, DoubleSide, FlatShading, SmoothShading, NoColors, FaceColors, VertexColors, NoBlending, NormalBlending, AdditiveBlending, SubtractiveBlending, MultiplyBlending, CustomBlending, AddEquation, SubtractEquation, ReverseSubtractEquation, MinEquation, MaxEquation, ZeroFactor, OneFactor, SrcColorFactor, OneMinusSrcColorFactor, SrcAlphaFactor, OneMinusSrcAlphaFactor, DstAlphaFactor, OneMinusDstAlphaFactor, DstColorFactor, OneMinusDstColorFactor, SrcAlphaSaturateFactor, NeverDepth, AlwaysDepth, LessDepth, LessEqualDepth, EqualDepth, GreaterEqualDepth, GreaterDepth, NotEqualDepth, MultiplyOperation, MixOperation, AddOperation, NoToneMapping, LinearToneMapping, ReinhardToneMapping, Uncharted2ToneMapping, CineonToneMapping, UVMapping, CubeReflectionMapping, CubeRefractionMapping, EquirectangularReflectionMapping, EquirectangularRefractionMapping, SphericalReflectionMapping, CubeUVReflectionMapping, CubeUVRefractionMapping, RepeatWrapping, ClampToEdgeWrapping, MirroredRepeatWrapping, NearestFilter, NearestMipMapNearestFilter, NearestMipMapLinearFilter, LinearFilter, LinearMipMapNearestFilter, LinearMipMapLinearFilter, UnsignedByteType, ByteType, ShortType, UnsignedShortType, IntType, UnsignedIntType, FloatType, HalfFloatType, UnsignedShort4444Type, UnsignedShort5551Type, UnsignedShort565Type, UnsignedInt248Type, AlphaFormat, RGBFormat, RGBAFormat, LuminanceFormat, LuminanceAlphaFormat, RGBEFormat, DepthFormat, DepthStencilFormat, RGB_S3TC_DXT1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGB_PVRTC_4BPPV1_Format, RGB_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_PVRTC_2BPPV1_Format, RGB_ETC1_Format, LoopOnce, LoopRepeat, LoopPingPong, InterpolateDiscrete, InterpolateLinear, InterpolateSmooth, ZeroCurvatureEnding, ZeroSlopeEnding, WrapAroundEnding, TrianglesDrawMode, TriangleStripDrawMode, TriangleFanDrawMode, LinearEncoding, sRGBEncoding, GammaEncoding, RGBEEncoding, LogLuvEncoding, RGBM7Encoding, RGBM16Encoding, RGBDEncoding, BasicDepthPacking, RGBADepthPacking, CubeGeometry, Face4, LineStrip, LinePieces, MeshFaceMaterial, MultiMaterial, PointCloud, Particle, ParticleSystem, PointCloudMaterial, ParticleBasicMaterial, ParticleSystemMaterial, Vertex, DynamicBufferAttribute, Int8Attribute, Uint8Attribute, Uint8ClampedAttribute, Int16Attribute, Uint16Attribute, Int32Attribute, Uint32Attribute, Float32Attribute, Float64Attribute, ClosedSplineCurve3, SplineCurve3, Spline, BoundingBoxHelper, EdgesHelper, WireframeHelper, XHRLoader, BinaryTextureLoader, GeometryUtils, ImageUtils, Projector, CanvasRenderer */
+/* all exports used */
+/*!***************************************!*\
+  !*** ./~/three/build/three.module.js ***!
+  \***************************************/
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -43761,6 +43766,11 @@ function CanvasRenderer() {
 
 /***/ }),
 /* 1 */
+/* unknown exports provided */
+/* all exports used */
+/*!**********************************!*\
+  !*** ./src/ballSpinnerLoader.js ***!
+  \**********************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43771,7 +43781,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.BallSpinnerLoader = undefined;
 
-var _three = __webpack_require__(0);
+var _three = __webpack_require__(/*! three */ 0);
 
 var BallSpinnerLoader = function BallSpinnerLoader(config) {
   config = config || {};
@@ -43931,6 +43941,11 @@ exports.BallSpinnerLoader = BallSpinnerLoader;
 
 /***/ }),
 /* 2 */
+/* unknown exports provided */
+/* all exports used */
+/*!*************************************!*\
+  !*** ./src/progressiveImgLoader.js ***!
+  \*************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43941,7 +43956,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ProgressiveImgLoader = undefined;
 
-var _three = __webpack_require__(0);
+var _three = __webpack_require__(/*! three */ 0);
 
 var ProgressiveImgLoader = function ProgressiveImgLoader() {}; /**
                                                                 * ProgressiveImgLoader.js <https://github.com/knee-cola/ProgressiveImgLoader.js>
@@ -44038,6 +44053,11 @@ exports.ProgressiveImgLoader = ProgressiveImgLoader;
 
 /***/ }),
 /* 3 */
+/* unknown exports provided */
+/* all exports used */
+/*!*******************************!*\
+  !*** ./src/sphereControls.js ***!
+  \*******************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44048,7 +44068,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SphereControls = undefined;
 
-var _three = __webpack_require__(0);
+var _three = __webpack_require__(/*! three */ 0);
 
 var SphereControls = function SphereControls(camera, domElement, config) {
 
@@ -44299,6 +44319,11 @@ exports.SphereControls = SphereControls;
 
 /***/ }),
 /* 4 */
+/* unknown exports provided */
+/* all exports used */
+/*!*******************************************!*\
+  !*** ./~/jquery-slim/dist/jquery.slim.js ***!
+  \*******************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -52238,6 +52263,11 @@ return jQuery;
 
 /***/ }),
 /* 5 */
+/* unknown exports provided */
+/* all exports used */
+/*!*****************************!*\
+  !*** ./src/sphereViewer.js ***!
+  \*****************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52248,17 +52278,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Viewer = undefined;
 
-var _three = __webpack_require__(0);
+var _three = __webpack_require__(/*! three */ 0);
 
-var _jquerySlim = __webpack_require__(4);
+var _jquerySlim = __webpack_require__(/*! jquery-slim */ 4);
 
 var _jquerySlim2 = _interopRequireDefault(_jquerySlim);
 
-var _sphereControls = __webpack_require__(3);
+var _sphereControls = __webpack_require__(/*! ./sphereControls */ 3);
 
-var _progressiveImgLoader = __webpack_require__(2);
+var _progressiveImgLoader = __webpack_require__(/*! ./progressiveImgLoader */ 2);
 
-var _ballSpinnerLoader = __webpack_require__(1);
+var _ballSpinnerLoader = __webpack_require__(/*! ./ballSpinnerLoader */ 1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -52362,18 +52392,11 @@ proto.initScene = function () {
 
 proto.initCube = function (imgUrl) {
 
-  var cubeSize = 100,
-      config = this.config;
+  var cubeSize = 100;
 
   // (1) create 3D objects + use Canvas as texture
   var canvases = [0, 1, 2, 3, 4, 5].map(function (el) {
-    var canvas = document.createElement("canvas");
-    // making canvas the same size as the image
-    // which will be drawn on it
-    //canvas.width = 1024;
-    //canvas.height = 1024;
-
-    return canvas;
+    return document.createElement("canvas");
   });
 
   var materials = canvases.map(function (canvas) {
@@ -52382,11 +52405,31 @@ proto.initCube = function (imgUrl) {
     });
   });
 
-  this.mesh = new _three.Mesh(new _three.CubeGeometry(cubeSize, cubeSize, cubeSize), materials);
+  this.mesh = new _three.Mesh(new _three.BoxGeometry(cubeSize, cubeSize, cubeSize), materials);
   this.mesh.scale.x = -1; // flipping sphere inside-out - not the texture is rendered on the inner side
   this.scene.add(this.mesh);
 
   // this.showLoader();
+
+  switch (this.config.imgProjection) {
+    case 'tiles':
+      this.loadTiles(imgUrl, materials, canvases);
+      break;
+    case 'atlas':
+      this.loadAtlas(imgUrl, materials, canvases);
+      break;
+    case 'equi':
+      this.loadEqui(imgUrl, materials, canvases);
+      break;
+
+  }
+}; // proto.initCube = function(imgUrl) {...}
+
+proto.loadTiles = function (imgUrl, materials, canvases) {}; // proto.loadTiles = function() {...}
+proto.loadAtlas = function (imgUrl, materials, canvases) {}; // proto.loadTiles = function() {...}
+
+proto.loadEqui = function (imgUrl, materials, canvases) {
+  var self = this;
 
   var imgObj = new Image();
 
@@ -52395,12 +52438,8 @@ proto.initCube = function (imgUrl) {
 
   imgObj.onload = function () {
 
-    console.log('imgObj.onload');
-
     var srcWidth = imgObj.width,
-        srcHeight = imgObj.height,
-        faceWidth = srcWidth / 4,
-        faceHeight = faceWidth;
+        srcHeight = imgObj.height;
 
     // (3) when the image is loaded, start the conversion
     var inCanvas = document.createElement('canvas');
@@ -52411,62 +52450,69 @@ proto.initCube = function (imgUrl) {
     inCtx.drawImage(imgObj, 0, 0);
 
     var srcImg = inCtx.getImageData(0, 0, srcWidth, srcHeight);
-    var imgOut = new ImageData(faceWidth, faceHeight);
 
-    var tileIx2canvasIx = {
-      0: 5, // back
-      1: 1, // left
-      2: 4, // front
-      3: 0, // right
-      4: 2, // top
-      5: 3 // bottom
-    };
+    self.equi2recti(srcImg, materials, canvases);
+  }; // imgObj.onload = function() {...}
 
-    var onWorkerMessage = function onWorkerMessage(event) {
-      // (4) as each image is converted apply it to canvas used as texture
+  // (2) start loading the image
+  imgObj.src = imgUrl;
+}; // proto.loadEqui = function() {...}
 
-      var faceIx = event.data.faceIx,
-          canvasIx = tileIx2canvasIx[faceIx],
-          oneCanvas = canvases[canvasIx];
+proto.equi2recti = function (srcImg, materials, canvases) {
 
-      oneCanvas.width = faceWidth;
-      oneCanvas.height = faceHeight;
+  var self = this,
+      faceSize = srcImg.width / 4;
 
-      oneCanvas.getContext("2d").putImageData(event.data.imgData, 0, 0);
+  var imgOut = new ImageData(faceSize, faceSize);
 
-      materials[canvasIx].map.needsUpdate = true;
+  var tileIx2canvasIx = {
+    0: 5, // back
+    1: 1, // left
+    2: 4, // front
+    3: 0, // right
+    4: 2, // top
+    5: 3 // bottom
+  };
 
-      console.log('done ' + event.data.faceIx);
-    };
+  var onWorkerMessage = function onWorkerMessage(event) {
+    // (4) as each image is converted apply it to canvas used as texture
 
-    if (config.multiWorker) {
-      console.log('multiWorker');
-      for (var i = 0; i < 6; i++) {
-        var w = new Worker("../src/equi2recti-worker.js");
-        w.onmessage = onWorkerMessage;
+    var faceIx = event.data.faceIx,
+        canvasIx = tileIx2canvasIx[faceIx],
+        oneCanvas = canvases[canvasIx];
 
-        // begin converting the images
-        w.postMessage({
-          srcImg: srcImg,
-          imgOut: imgOut,
-          faceIx: i
-        });
-      }
-    } else {
+    oneCanvas.width = faceSize;
+    oneCanvas.height = faceSize;
+
+    oneCanvas.getContext("2d").putImageData(event.data.imgData, 0, 0);
+
+    materials[canvasIx].map.needsUpdate = true;
+  };
+
+  if (self.config.multiWorker) {
+    console.log('multiWorker');
+    for (var i = 0; i < 6; i++) {
       var w = new Worker("../src/equi2recti-worker.js");
       w.onmessage = onWorkerMessage;
 
       // begin converting the images
       w.postMessage({
         srcImg: srcImg,
-        imgOut: imgOut
+        imgOut: imgOut,
+        faceIx: i
       });
     }
-  }; // imgObj.onload = function() {...}
+  } else {
+    var w = new Worker("../src/equi2recti-worker.js");
+    w.onmessage = onWorkerMessage;
 
-  // (2) start loading the image
-  imgObj.src = imgUrl;
-}; // proto.initCube = function() {...}
+    // begin converting the images
+    w.postMessage({
+      srcImg: srcImg,
+      imgOut: imgOut
+    });
+  }
+}; // proto.equi2recti = function(srcImg, materials, canvases) {...}
 
 proto.initSphere = function (imageUrls) {
 
@@ -52641,3 +52687,4 @@ exports.Viewer = SphereViewer;
 /***/ })
 /******/ ]);
 });
+//# sourceMappingURL=sphereViewer.js.map

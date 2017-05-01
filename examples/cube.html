@@ -32,10 +32,9 @@
           logo:'img/logo.png',
           logoDistance: -30,
           // The source image projection is "equirectangular"
-          // NOTE A: available options "rectilinear" and "equirectangular"
+          // NOTE A: available options "tiles" and "equi"
           //         if this option is not provided, it defaults to "equirectangular"
-          // NOTE B: "rectilinear" is not yet supported
-          imgProjection: 'equirectangular',
+          imgProjection: 'equi',
           // Instructing viewer to draw the texture image onto a CUBE (instead of a default SPHERE)
           // NOTE: equirectangular texture will automatically be converted into a rectilinear
           //       before it's applied onto a cube (although direct loading of rectilinear images

@@ -32,6 +32,7 @@
     "jquery": "^3.2.1",
     "jquery-slim": "^3.0.0",
     "three": "^0.85.2",
+    "three-canvas-renderer": "^1.0.1",
     "webpack": "^2.3.3"
   }
 }
