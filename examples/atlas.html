@@ -1,0 +1,65 @@
+<!DOCTYPE html >
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta charset="utf-8">
+    <title>Premier Locator</title>
+
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,500italic,700,700italic|Roboto+Mono:400,500,700|Material+Icons">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="//code.jquery.com/jquery-3.2.1.slim.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/85/three.min.js"></script>
+    <script src="../dist/sphereViewer.js"></script>
+  </head>
+  <body>
+    <script>
+      // starting all up
+      initSphere();
+
+      function initSphere(ev) {
+        
+        if(ev) {
+          ev.target.remove();
+        }
+
+        var isMobile = window.devicePixelRatio!==1;
+
+        var config = {
+          // the texture is defined as an atlas image file,
+          // containing all the cube faces 
+		  atlas: 'img/atlas.jpg',
+		  // The expected/default order of the tiles in the atlas image
+		  // file is right,left,top,bottom,front,back
+		  // In case some other order is used, here we can specify which
+		  // If this param is ommited it will be set to a default order  
+		  tileOrder: ['right','left','top','bottom','front','back'],
+
+          logo:'img/logo.png',
+          logoDistance: -30,
+          // run multiple web workers in paralel
+          multiWorker: true,
+
+          hint: isMobile ? 'img/sphere-icon-mobile.png' : 'img/sphere-icon-desktop.png',
+          control: {
+            autoRotate: true, autoRotateSpeed: 2, autoRotateDirection:-1
+          },
+          // defining HTML for the close button
+          closeButtonHtml: '<i class="cmdCloseSphere material-icons">highlight_off</i>'
+        };
+
+        var sphere = new SphereViewer.Viewer(config);
+
+        sphere.addEventListener('closed', function() {
+          // after the sphere is closed, display a button for showing the sphere
+          var cmdShowSphere = document.createElement('button');
+          cmdShowSphere.className = 'cmdShowSphere';
+          cmdShowSphere.innerHTML = 'Show Sphere';
+          cmdShowSphere.addEventListener('click', initSphere)
+
+          document.getElementsByTagName('body')[0].appendChild(cmdShowSphere);
+        });
+      }
+
+    </script>
+  </body>
+</html>

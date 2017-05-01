@@ -1,0 +1,75 @@
+<!DOCTYPE html >
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <meta charset="utf-8">
+    <title>Premier Locator</title>
+
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,500italic,700,700italic|Roboto+Mono:400,500,700|Material+Icons">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="//code.jquery.com/jquery-3.2.1.slim.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/85/three.min.js"></script>
+    <script src="../dist/sphereViewer.js"></script>
+  </head>
+  <body>
+    <script>
+      // starting all up
+      initSphere();
+
+      function initSphere(ev) {
+        
+        if(ev) {
+          ev.target.remove();
+        }
+
+        var isMobile = window.devicePixelRatio!==1;
+
+        var config = {
+		  // if the source image is passed as the [sphere] property
+		  // the textere will be applied onto a 3D sphere
+		  // (unless the [forceCube] flag is set - see below) 
+          sphere: 'img/sphere2048.jpg',
+		  // if the [forceCube] flag is set to TRUE, the texture will be
+		  // applied onto a 3D Cube instead of a 3D Sphere.
+		  // NOTE: although a 3D cube is rendered faster than a 3D Sphere,
+		  //       this method of displaying a sphere will be hit
+		  //       with additional delay before the image is first displayed,
+		  //       since it will need to be converted to cubical
+		  //       (rectilinear) projection (in web worker)
+		  //       Performancewise it's better to use tiles or a texture atlas
+		  forceCube: true,
+          logo:'img/logo.png',
+          logoDistance: -30,
+          // The source image projection is "equirectangular"
+          // NOTE A: available options "rectilinear" and "equirectangular".
+          // NOTE B: "rectilinear" is not yet supported
+          imgProjection: 'equirectangular',
+          // Instructing viewer to draw the texture image onto a SPHERE
+          // NOTE A: available values are "sphere" and "cube"
+          // NOTE B: this can be ommited, since this option defaults to "sphere"
+          textureTarget: 'sphere',
+
+          hint: isMobile ? 'img/sphere-icon-mobile.png' : 'img/sphere-icon-desktop.png',
+          control: {
+            autoRotate: true, autoRotateSpeed: 2, autoRotateDirection:-1
+          },
+          // defining HTML for the close button
+          closeButtonHtml: '<i class="cmdCloseSphere material-icons">highlight_off</i>'
+        };
+
+        var sphere = new SphereViewer.Viewer(config);
+
+        sphere.addEventListener('closed', function() {
+          // after the sphere is closed, display a button for showing the sphere
+          var cmdShowSphere = document.createElement('button');
+          cmdShowSphere.className = 'cmdShowSphere';
+          cmdShowSphere.innerHTML = 'Show Sphere';
+          cmdShowSphere.addEventListener('click', initSphere)
+
+          document.getElementsByTagName('body')[0].appendChild(cmdShowSphere);
+        });
+      }
+
+    </script>
+  </body>
+</html>
