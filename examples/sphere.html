@@ -7,8 +7,10 @@
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,500italic,700,700italic|Roboto+Mono:400,500,700|Material+Icons">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <!--
     <script src="//code.jquery.com/jquery-3.2.1.slim.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+    -->
     <script src="../dist/sphereViewer.js"></script>
   </head>
   <body>
@@ -35,6 +37,17 @@
         }
 
         var config = {
+		  // if the source image is passed as the [sphere] property
+		  // the textere will be applied onto a 3D sphere
+		  // (unless the [forceCube] flag is set - see below) 
+          sphere: imageUrls,
+		  // NOTE: although a 3D cube is rendered faster than a 3D Sphere,
+		  //       this method of displaying a sphere will be hit
+		  //       with additional delay before the image is first displayed,
+		  //       since it will need to be converted to cubical
+		  //       (rectilinear) projection (in web worker)
+		  //       Performancewise it's better to use tiles or a texture atlas
+		  // forceCube: false,
           logo:'img/logo.png',
           logoDistance: -30,
           // The source image projection is "equirectangular"
@@ -54,7 +67,7 @@
           closeButtonHtml: '<i class="cmdCloseSphere material-icons">highlight_off</i>'
         };
 
-        var sphere = new SphereViewer.Viewer(imageUrls, config);
+        var sphere = new SphereViewer.Viewer(config);
 
         sphere.addEventListener('closed', function() {
           // after the sphere is closed, display a button for showing the sphere

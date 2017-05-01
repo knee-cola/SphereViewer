@@ -26,20 +26,16 @@
 
         var isMobile = window.devicePixelRatio!==1;
 
-        var imageUrls = './img/room.jpg';
-
         var config = {
-          logo:'img/logo.png',
-          logoDistance: -30,
           // The source image projection is "equirectangular"
-          // NOTE A: available options "tiles" and "equi"
-          //         if this option is not provided, it defaults to "equirectangular"
-          imgProjection: 'equi',
+		  sphere: './img/room.jpg',
           // Instructing viewer to draw the texture image onto a CUBE (instead of a default SPHERE)
           // NOTE: equirectangular texture will automatically be converted into a rectilinear
-          //       before it's applied onto a cube (although direct loading of rectilinear images
-          //       is not yet supported)
-          textureTarget: 'cube',
+          //       before it's applied onto a cube
+		  forceCube: true,
+
+          logo:'img/logo.png',
+          logoDistance: -30,
           // run multiple web workers in paralel
           multiWorker: true,
 
@@ -51,7 +47,7 @@
           closeButtonHtml: '<i class="cmdCloseSphere material-icons">highlight_off</i>'
         };
 
-        var sphere = new SphereViewer.Viewer(imageUrls, config);
+        var sphere = new SphereViewer.Viewer(config);
 
         sphere.addEventListener('closed', function() {
           // after the sphere is closed, display a button for showing the sphere

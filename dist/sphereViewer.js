@@ -52292,7 +52292,7 @@ var _ballSpinnerLoader = __webpack_require__(/*! ./ballSpinnerLoader */ 1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function SphereViewer(imageUrls, config) {
+function SphereViewer(config) {
 
   this.isDisposed = false;
   this.config = config = config || {};
@@ -52300,10 +52300,14 @@ function SphereViewer(imageUrls, config) {
   this.initViewport();
   this.initScene();
 
-  if (this.config.textureTarget === 'cube') {
-    this.initCube(imageUrls);
+  if (this.config.sphere && !this.config.forceCube) {
+    // IF image URLs are provided via a "sphere" param
+    // AND cube geometry is not forced
+    // > apply texture onto a sphere
+    this.initSphere();
   } else {
-    this.initSphere(imageUrls);
+    // ELSE apply texture onto a cube/box 
+    this.initCube();
   }
 
   if (this.config.logo) {
@@ -52392,9 +52396,63 @@ proto.initScene = function () {
 
 proto.initCube = function (imgUrl) {
 
-  var cubeSize = 100;
+  var cubeSize = 100,
+      materials;
 
-  // (1) create 3D objects + use Canvas as texture
+  if (this.config.sphere) {
+    // IF a sphereicaql image is to be used
+    // > convert it from spherical projection (equirectangulat)
+    //   to cubical projection (rectilinear)
+    materials = this.loadEqui();
+  } else if (this.config.tiles) {
+    // ELSE IF the texture is proveded as separate tiles
+    // > load each tile separatley
+    materials = this.loadTiles();
+  } else if (this.config.atlas) {
+    // ELSE IF the texture is provided as a single Atlas image file
+    // containing all the tiles
+    // > load the atlas file and split it into tiles
+    materials = this.loadAtlas();
+  }
+
+  this.mesh = new _three.Mesh(new _three.BoxGeometry(cubeSize, cubeSize, cubeSize), materials);
+  this.mesh.scale.x = -1; // flipping sphere inside-out - not the texture is rendered on the inner side
+  this.scene.add(this.mesh);
+}; // proto.initCube = function(imgUrl) {...}
+
+proto.loadTiles = function () {
+
+  var tiles = this.config.tiles;
+  var image_placeholder = document.createElement('canvas');
+
+  // the order of faces in the following array is IMPORTANT
+  var materials = ['right', 'left', 'top', 'bottom', 'back', 'front'].map(function (key) {
+    var img = new Image(),
+        texture = new _three.Texture(image_placeholder);
+
+    img.onload = function () {
+      console.log(tiles[key]);
+      texture.image = img;
+      texture.needsUpdate = true;
+    };
+
+    img.src = tiles[key];
+
+    return new _three.MeshBasicMaterial({
+      map: texture
+    });
+  });
+
+  return materials;
+}; // proto.loadTiles = function() {...}
+
+proto.loadAtlas = function (imgUrl, materials, canvases) {}; // proto.loadAtlas = function() {...}
+
+proto.loadEqui = function () {
+
+  var self = this;
+  var imgObj = new Image();
+
   var canvases = [0, 1, 2, 3, 4, 5].map(function (el) {
     return document.createElement("canvas");
   });
@@ -52404,34 +52462,6 @@ proto.initCube = function (imgUrl) {
       map: new _three.Texture(canvas)
     });
   });
-
-  this.mesh = new _three.Mesh(new _three.BoxGeometry(cubeSize, cubeSize, cubeSize), materials);
-  this.mesh.scale.x = -1; // flipping sphere inside-out - not the texture is rendered on the inner side
-  this.scene.add(this.mesh);
-
-  // this.showLoader();
-
-  switch (this.config.imgProjection) {
-    case 'tiles':
-      this.loadTiles(imgUrl, materials, canvases);
-      break;
-    case 'atlas':
-      this.loadAtlas(imgUrl, materials, canvases);
-      break;
-    case 'equi':
-      this.loadEqui(imgUrl, materials, canvases);
-      break;
-
-  }
-}; // proto.initCube = function(imgUrl) {...}
-
-proto.loadTiles = function (imgUrl, materials, canvases) {}; // proto.loadTiles = function() {...}
-proto.loadAtlas = function (imgUrl, materials, canvases) {}; // proto.loadTiles = function() {...}
-
-proto.loadEqui = function (imgUrl, materials, canvases) {
-  var self = this;
-
-  var imgObj = new Image();
 
   // this needs to be sit in order not to get "Tainted canvases may not be loaded." WebGL error
   imgObj.crossOrigin = "anonymous";
@@ -52455,7 +52485,9 @@ proto.loadEqui = function (imgUrl, materials, canvases) {
   }; // imgObj.onload = function() {...}
 
   // (2) start loading the image
-  imgObj.src = imgUrl;
+  imgObj.src = this.config.sphere;
+
+  return materials;
 }; // proto.loadEqui = function() {...}
 
 proto.equi2recti = function (srcImg, materials, canvases) {
@@ -52514,7 +52546,7 @@ proto.equi2recti = function (srcImg, materials, canvases) {
   }
 }; // proto.equi2recti = function(srcImg, materials, canvases) {...}
 
-proto.initSphere = function (imageUrls) {
+proto.initSphere = function () {
 
   var speherRadius = 100,
       sphere_H_segments = 64,
@@ -52533,13 +52565,13 @@ proto.initSphere = function (imageUrls) {
     this.config.uvMapper(geometry);
   }
 
-  this.sphere = new _three.Mesh(geometry, new _three.MeshBasicMaterial({
-    map: this.imgLoader.load(imageUrls),
+  this.mesh = new _three.Mesh(geometry, new _three.MeshBasicMaterial({
+    map: this.imgLoader.load(this.config.sphere),
     side: _three.FrontSide // displaying the texture on the outer side of the sphere
   }));
 
-  this.sphere.scale.x = -1; // flipping sphere inside-out - not the texture is rendered on the inner side
-  this.scene.add(this.sphere);
+  this.mesh.scale.x = -1; // flipping sphere inside-out - not the texture is rendered on the inner side
+  this.scene.add(this.mesh);
 
   this.showLoader();
 }; // proto.initSphere = function(imageUrls) {...}
