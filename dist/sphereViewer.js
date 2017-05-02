@@ -683,6 +683,11 @@ var _ballSpinnerLoader = __webpack_require__(/*! ./ballSpinnerLoader */ 1);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function SphereViewer(config) {
+	var paramType = Object.prototype.toString.call(config);
+
+	if (config === void 0 || paramType === '[object String]' || paramType === '[object Array]') {
+		throw new Error('the first (and only) parameter of SphereViewer must be a config object');
+	}
 
 	this.isDisposed = false;
 	this.config = config = config || {};

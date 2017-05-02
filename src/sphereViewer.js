@@ -28,7 +28,12 @@ import {ProgressiveImgLoader} from './progressiveImgLoader'
 import {BallSpinnerLoader} from './ballSpinnerLoader'
 
 function SphereViewer(config) {
-
+	var paramType = Object.prototype.toString.call(config);
+	
+	if(config === void 0 || paramType === '[object String]' || paramType === '[object Array]') {
+		throw new Error('the first (and only) parameter of SphereViewer must be a config object');
+	}
+	
 	this.isDisposed = false;
 	this.config = config = config || {};
 
