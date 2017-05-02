@@ -1164,7 +1164,9 @@ proto.dispose = function () {
 
 	this.controls.removeEventListener('tap', this.controls_onTap);
 
-	this.imgLoader.dispose();
+	if (this.imgLoader) {
+		this.imgLoader.dispose();
+	}
 
 	this.isDisposed = true;
 	this.container.remove();
