@@ -1,6 +1,6 @@
 {
   "name": "sphere-viewer",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "A simple JavaScript library for displaying spherical images on desktop and mobile browsers",
   "main": "dist/sphere-viewer.js",
   "module": "src/sphereViewer.js",
