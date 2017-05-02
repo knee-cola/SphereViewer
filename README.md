@@ -3,18 +3,20 @@
 Displays photo spheres created with [Ricoh Theta](https://theta360.com/en/) or [Google Street View App](https://play.google.com/store/apps/details?id=com.google.android.street) on mobile and desktop browsers.
 
 ## Features
-* customizable through config
+* customizable via config
+	* can hide the triopod by displaying custom logo at the sphere bottom
+	* can display user instructions (PNG image)
+	* supports UV mapping customization
+* works on desktop and mobile browsers
 * image preloading for slower connection (only in "sphere" mode)
-* displays spinner while loading images
-* can hide the triopod by displaying custom logo at the sphere bottom
-* can display user instructions (PNG image)
-* supports vanilla JavaScript and AMD
-* supports UV mapping customization
+	* displays spinner while loading images
+
 * texture can be provided in three different formats
-	* as spherical image as produced by Ricoh Theta/Google Street View (equirectangular projection)
-	* as serie of separate tile images (rectilinear projection)
+	* as spherical image as produced by Ricoh Theta/Google Street View ([equirectangular projection](http://wiki.panotools.org/Equirectangular_Projection))
+	* as serie of separate tile images ([rectilinear projection](http://wiki.panotools.org/Cubic_Projection))
 	* as tile atlas (single image containing all the tiles)
-* supports conversion of sphercal textures into a cubical one (equirectangular-2-rectilinear)
+* supports conversion of spherical textures into a cubical one (equirectangular-2-rectilinear)
+* supports vanilla JavaScript and AMD
 
 ## Live Demo
 Live demo is available on CodePen.io http://codepen.io/knee-cola/pen/vxQYNL
@@ -34,13 +36,18 @@ To install it via NPM run:
 ```
 npm i -D --save-dev sphere-viewer
 ```
-### Old school linking from HTML
-If you use the Vanilla JavaScript, link the lib in from HTML like this (the code bellow includes links to dependencies):
+Then just import it in your JavaScript ... for example, like this:
+```
+import SphereViewer from 'sphere-viewer'
+```
+### Using CDN (vanilla JavaScript)
+If you use the vanilla JavaScript, link the lib from HTML like this (the code bellow also includes dependencies):
 ```html
   <script src="//code.jquery.com/jquery-3.2.1.slim.js"></script>
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/three.js/85/three.min.js"></script>
   <script type="text/javascript" src="//cdn.rawgit.com/knee-cola/SphereViewer/042c4c83/dist/sphereViewer.min.js"></script>
 ```
+### Downloading the viewer (minified)
 If you want to store files localy on yout server, you can download the minified file from [GitHub repository](https://github.com/knee-cola/SphereViewer/blob/master/dist/sphereViewer.min.js).
 
 ## Dependencies
