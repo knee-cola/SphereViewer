@@ -6,16 +6,16 @@ Displays photo spheres created with [Ricoh Theta](https://theta360.com/en/) or [
 * customizable via config
 	* can hide the triopod by displaying custom logo at the sphere bottom
 	* can display user instructions (PNG image)
-	* supports UV mapping customization
 * works on desktop and mobile browsers
-* image preloading for slower connection (only in "sphere" mode)
-	* displays spinner while loading images
-
 * texture can be provided in three different formats
 	* as spherical image as produced by Ricoh Theta/Google Street View ([equirectangular projection](http://wiki.panotools.org/Equirectangular_Projection))
 	* as serie of separate tile images ([rectilinear projection](http://wiki.panotools.org/Cubic_Projection))
 	* as tile atlas (single image containing all the tiles)
-* supports conversion of spherical textures into a cubical one (equirectangular-2-rectilinear)
+* image preloading for slower connection (only in "sphere" mode)
+	* displays spinner while loading images
+* advance feature support
+	* conversion of spherical textures into a cubical one (equirectangular-2-rectilinear)
+	* custom UV mapping
 * supports vanilla JavaScript and AMD
 
 ## Live Demo
@@ -25,10 +25,10 @@ Live demo is available on CodePen.io http://codepen.io/knee-cola/pen/vxQYNL
 There is none ... you can figure it out from provided example files in the [**examples** folder @ GitHub](https://github.com/knee-cola/SphereViewer/blob/master/examples/). The code inside the HTML files is well documented.
 
 Four examples are provided:
-* **sphere.html** - rendering a spherical image coming from a Ricoh Theta/Google Street View
-* **tiles.html** - rendering a series of rectilinear tiles onto a cube (faster on old devices) 
-* **atlas.html** - rendering a rectilinear tiles from a single atlas image (faster on old devices)
-* **force-cube.html** - a special case where the spherical (equirectangular) image is rendered onto a 3D cube instead of a 3D sphere (default)
+* [**sphere.html**](https://github.com/knee-cola/SphereViewer/blob/master/examples/sphere.html) - rendering a [spherical](http://wiki.panotools.org/Equirectangular_Projection) image coming from a Ricoh Theta/Google Street View
+* [**tiles.html**](https://github.com/knee-cola/SphereViewer/blob/master/examples/tiles.html) - rendering a series of [rectilinear](http://wiki.panotools.org/Cubic_Projection) tiles onto a cube (faster on old devices) 
+* [**atlas.html**](https://github.com/knee-cola/SphereViewer/blob/master/examples/atlas.html) - rendering a [rectilinear](http://wiki.panotools.org/Cubic_Projection) tiles onto a cube (faster on old devices) tiles from a single atlas image (faster on old devices)
+* [**force-cube.html**](https://github.com/knee-cola/SphereViewer/blob/master/examples/forced-cube.html) - a special case where the spherical ([equirectangular](http://wiki.panotools.org/Equirectangular_Projection)) image is rendered onto a 3D cube instead of a 3D sphere (default)
 
 ## Installation
 ### NPM installation
