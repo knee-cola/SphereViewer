@@ -3,7 +3,7 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <meta charset="utf-8">
-    <title>Premier Locator</title>
+    <title>Forced Cube</title>
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,500italic,700,700italic|Roboto+Mono:400,500,700|Material+Icons">
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -25,35 +25,49 @@
         var isMobile = window.devicePixelRatio!==1;
 
         var config = {
-		  // if the source image is passed as the [sphere] property
-		  // the textere will be applied onto a 3D sphere
-		  // (unless the [forceCube] flag is set - see below) 
+          // When the source image is passed as the [sphere] property
+          // the textere will be applied onto a 3D sphere
+          // (unless the [forceCube] flag is set - see below)
+          //
+          // NOTE: the pre-loading feature is not supported in
+          // the "tile", "atlas" or "forceCube" modes
           sphere: 'img/sphere2048.jpg',
-		  // if the [forceCube] flag is set to TRUE, the texture will be
-		  // applied onto a 3D Cube instead of a 3D Sphere.
-		  // NOTE: although a 3D cube is rendered faster than a 3D Sphere,
-		  //       this method of displaying a sphere will be hit
-		  //       with additional delay before the image is first displayed,
-		  //       since it will need to be converted to cubical
-		  //       (rectilinear) projection (in web worker)
-		  //       Performancewise it's better to use tiles or a texture atlas
-		  forceCube: true,
+
+          // If the [forceCube] flag is set to TRUE, the texture will be
+          // applied onto a 3D Cube instead of a 3D Sphere.
+          //
+          // NOTE: although rendering a 3D cube is much faster on weak devices,
+          //       than using a 3D Sphere, this method will be hit
+          //       with additional delay in the initial setup phase,
+          //       since it image projection needs to be converted to cubical
+          //       (rectilinear) projection.
+          //       Performancewise it's better to use tiles or a texture atlas
+ 		  forceCube: true,
+		  
+          // (optional) run multiple web workers in paralel
+          // The texture conversion (from spherical to cubical)
+          // is done in the background thread (web worker).
+          // Here we can sppecify if we want to use multiple
+          // workers, each converting one face in paralel,
+          // or a single one working one one face at the time
+          // HINT: on multicore CPUs this should beset to TRUE 
+          multiWorker: true,
+
+          // (optional) displaying logo at the sphere bottom
           logo:'img/logo.png',
           logoDistance: -30,
-          // The source image projection is "equirectangular"
-          // NOTE A: available options "rectilinear" and "equirectangular".
-          // NOTE B: "rectilinear" is not yet supported
-          imgProjection: 'equirectangular',
-          // Instructing viewer to draw the texture image onto a SPHERE
-          // NOTE A: available values are "sphere" and "cube"
-          // NOTE B: this can be ommited, since this option defaults to "sphere"
-          textureTarget: 'sphere',
 
+          // (optional) displaying instructions
           hint: isMobile ? 'img/sphere-icon-mobile.png' : 'img/sphere-icon-desktop.png',
+          
+          // (optional) configuring controls
           control: {
-            autoRotate: true, autoRotateSpeed: 2, autoRotateDirection:-1
+            autoRotate: true,
+            autoRotateSpeed: 2,
+            autoRotateDirection:-1
           },
-          // defining HTML for the close button
+
+          // (optional) defining HTML for the close button
           closeButtonHtml: '<i class="cmdCloseSphere material-icons">highlight_off</i>'
         };
 

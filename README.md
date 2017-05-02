@@ -4,7 +4,7 @@ Displays photo spheres created with [Ricoh Theta](https://theta360.com/en/) or [
 
 ## Features
 * customizable through config
-* image preloading for slower connection
+* image preloading for slower connection (only in "sphere" mode)
 * displays spinner while loading images
 * can hide the triopod by displaying custom logo at the sphere bottom
 * can display user instructions (PNG image)
@@ -21,6 +21,12 @@ Live demo is available on CodePen.io http://codepen.io/knee-cola/pen/vxQYNL
 
 ## Documentation
 There is none ... you can figure it out from provided example files in the [**examples** folder @ GitHub](https://github.com/knee-cola/SphereViewer/blob/master/examples/). The code inside the HTML files is well documented.
+
+Four examples are provided:
+* **sphere.html** - rendering a spherical image coming from a Ricoh Theta/Google Street View
+* **tiles.html** - rendering a series of rectilinear tiles onto a cube (faster on old devices) 
+* **atlas.html** - rendering a rectilinear tiles from a single atlas image (faster on old devices)
+* **force-cube.html** - a special case where the spherical (equirectangular) image is rendered onto a 3D cube instead of a 3D sphere (default)
 
 ## Installation
 ### NPM installation
@@ -45,31 +51,34 @@ SphereViewer was build with:
 ## Usage example
 
 ```javascript
-// defining spinner config
+var isMobile = window.devicePixelRatio!==1;
+
+// defining options
 var config = {
   // providing multiple images for the pre-loader
   sphere: ['img/sphere/preloader.jpg', 'img/sphere/hd.jpg'],
   
-  // (if set) the logo will be displayed at the bottom
+  // (optional) setting up a logo, which will be displayed at the bottom
   // of the sphere, which is usefull for hiding the triopod
   logo:'img/logo.png',
   
-  // (if set) the usage hint is displayed in the center of the screen
-  // and is hidden after the user clicks/taps the screen
+  // (optional) defining hint, which will be displayed in the center
+  // of the screen and is hidden after the user clicks/taps the screen
   hint: isMobile ? 'img/sphere-icon-mobile.png' : 'img/sphere-icon-desktop.png',
   
-  // overriding the default control config
+  // (optional) overriding the default control config
   control: {
     autoRotate: true
   },
   
-  // overidding the default spinner config
+  // (optional) overidding the default spinner config
   spinner: {
     groupRadius: 20
   },
 
-  // Here we can define what the close button should contain
-  // the HTML specified here will be placed inside a <div>
+  // (optional) defining what the close button should contain
+  //
+  // The HTML specified here will be placed inside a <div>
   // we can the style it as we wish via CSS.
   // When user clicks/taps the button, the sphere will close
   // and dispatch 'closed' event
@@ -78,7 +87,7 @@ var config = {
     html: '<i class="cmdCloseSphere material-icons">highlight_off</i>'
   },
 
-  // Here we could override the default THREE.js UV mapping, by providing a mapper function
+  // (optional) Here we could override the default THREE.js UV mapping, by providing a mapper function
   // uvMapper: (geometry) => { ... doing some custom UV mapping ...  }
 };
 

@@ -3,7 +3,7 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <meta charset="utf-8">
-    <title>Premier Locator</title>
+    <title>Tiles</title>
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,500italic,700,700italic|Roboto+Mono:400,500,700|Material+Icons">
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -25,8 +25,11 @@
         var isMobile = window.devicePixelRatio!==1;
 
         var config = {
-          // the source image is defined as a serie of tiles,
+          // The source image is defined as a serie of tiles,
           // which will be applied to sides of a cube
+          //
+          // NOTE: the pre-loading feature is not supported in
+          // the "tile", "atlas" or "forceCube" modes
 		  tiles: {
 			  top: 'img/sky/py.jpg',
 			  bottom: 'img/sky/ny.jpg',
@@ -35,15 +38,21 @@
 			  front: 'img/sky/nz.jpg',
 			  back: 'img/sky/pz.jpg'
 		  },
+		  
+          // (optional) displaying logo at the sphere bottom
           logo:'img/logo.png',
           logoDistance: -30,
-          // run multiple web workers in paralel
-          multiWorker: true,
 
+          // (optional) displaying instructions
           hint: isMobile ? 'img/sphere-icon-mobile.png' : 'img/sphere-icon-desktop.png',
+          
+          // (optional) configuring controls
           control: {
-            autoRotate: true, autoRotateSpeed: 2, autoRotateDirection:-1
+            autoRotate: true,
+            autoRotateSpeed: 2,
+            autoRotateDirection:-1
           },
+
           // defining HTML for the close button
           closeButtonHtml: '<i class="cmdCloseSphere material-icons">highlight_off</i>'
         };
