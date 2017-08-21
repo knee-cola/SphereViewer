@@ -367,12 +367,6 @@ proto.initSphere = function() {
       sphere_H_segments = 64,
       sphere_V_segments = 64;
 
-  this.imgLoader = new ProgressiveImgLoader();
-
-  this.loader_onDone = this.loader_onDone.bind(this);
-
-  this.imgLoader.addEventListener('done', this.loader_onDone);
-
   var geometry = new THREE_SphereGeometry(speherRadius, sphere_H_segments, sphere_V_segments);
 
   // check if a special UV mapping function should be used
@@ -383,7 +377,7 @@ proto.initSphere = function() {
   this.mesh = new THREE_Mesh(
       geometry,
       new THREE_MeshBasicMaterial({
-        map: this.imgLoader.load(this.config.sphere),
+        map: this.loadImages(this.config.sphere),
         side: THREE_FrontSide // displaying the texture on the outer side of the sphere
       })
   );
@@ -391,7 +385,6 @@ proto.initSphere = function() {
   this.mesh.scale.x = -1; // flipping sphere inside-out - not the texture is rendered on the inner side
   this.scene.add(this.mesh);
 
-  this.showLoader();
 }; // proto.initSphere = function(imageUrls) {...}
 
 proto.initLogo = function(logoUrl, logoDistance) {
@@ -515,6 +508,7 @@ proto.hideLoader = function() {
 }; // proto.hideLoader = function() { ... }
 
 proto.loader_onDone = function() {
+	console.log("loader_onDone");
   this.loader_onDone = null; // loader mi više nije potreban
   this.hideLoader();
 };
@@ -542,5 +536,28 @@ proto.dispose = function() {
   this.loaderEl = this.imgLoader = this.closeButton = this.container = this.renderer = this.container = this.camera = this.scene = this.sphere = this.controls = null;
 
 }; // proto.dispose = function() {...}
+
+
+
+/*-------------------------------------------------------------------------*//**
+ * Fetches the images from server and assignes them to a texture
+ *
+ * @param      {Array}    images  array containg image URLs
+ * @return     {Texture}  Three.js texture on which the images will be painted
+ */
+proto.loadImages = function(images) {
+
+	if(!this.imgLoader) {
+		this.imgLoader = new ProgressiveImgLoader();
+
+		this.loader_onDone = this.loader_onDone.bind(this);
+		this.imgLoader.addEventListener('done', this.loader_onDone);
+	}
+
+	this.showLoader();
+
+	return(this.imgLoader.load(images));
+
+}; // proto.loadImages = function(images) {...}
 
 export { SphereViewer as Viewer }

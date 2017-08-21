@@ -16,9 +16,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
+/******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/ 		}
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -281,45 +281,77 @@ exports.ProgressiveImgLoader = undefined;
 
 var _three = __webpack_require__(/*! three */ 0);
 
-var ProgressiveImgLoader = function ProgressiveImgLoader() {}; /**
-                                                                * ProgressiveImgLoader.js <https://github.com/knee-cola/ProgressiveImgLoader.js>
-                                                                * Released under the MIT license
-                                                                * @author Nikola Derežić / https://github.com/knee-cola
-                                                                * 
-                                                                * This is a simple progressive image loader for Three.js
-                                                                * 
-                                                                * It enables the smaller image (short loading time) files to be pre-loaded first,
-                                                                * before the big texture image is fully loaded.
-                                                                * 
-                                                                * The images are loaded in the order they are passed to the loader
-                                                                * 
-                                                                * The loader dispatches the following events:
-                                                                *  - progress = dispatched evey time an additional image was loaded
-                                                                *  - done = dispatched after the last image was loaded
-                                                                *  
-                                                                * Here's a simple example:
-                                                                * 
-                                                                *  // Defining an array of different sizes of images
-                                                                *  //
-                                                                *  // Hint: apart from degrading image resolution, smaller image files
-                                                                *  //       can also be produced by increasing the JPG compression
-                                                                *  var imageUrls = ['480p.jpg', '720p.jpg', '1080p.jpg', '2048p.jpg']:
-                                                                *  
-                                                                *  // creating a new loader
-                                                                *  var loader = new ProgressiveImageLoader(imageUrls);
-                                                                *  
-                                                                *  // registering event handlers
-                                                                *  loader.addEventListener('progress', function() { console.log('progress');  });
-                                                                *  loader.addEventListener('done', function() { console.log('done');  });
-                                                                *  
-                                                                *  // creating material - calling the [load] function
-                                                                *  var material = new THREE.MeshBasicMaterial({ map: loader.load() })
-                                                                *
-                                                                *  var mesh = new THREE.Mesh(geometry, material);
-                                                                *  
-                                                                *  scene.add(mesh);
-                                                                * 
-                                                                */
+var ProgressiveImgLoader = function ProgressiveImgLoader() {
+
+  var self = this;
+
+  self.texture = new _three.Texture();
+
+  // create an image object
+  self.imageObj = new Image();
+  // this needs to be sit in order not to get "Tainted canvases may not be loaded." WebGL error
+  self.imageObj.crossOrigin = "anonymous";
+
+  self.imageObj.onload = function () {
+
+    // [imageObj] is set to NULL when the object is disposed
+    if (self.imageObj) {
+
+      self.texture.needsUpdate = true;
+
+      if (self.loadingIx < self.images.length) {
+        self.dispatchEvent({ type: 'progress', imageIndex: self.loadingIx });
+
+        // don't change the image [src] until the texture had a chance to update itself
+        window.setTimeout(function () {
+          self.imageObj.src = self.images[self.loadingIx++];
+        }, 1000);
+      } else {
+        self.dispatchEvent({ type: 'done' });
+      }
+    }
+  }; // imageObj.onload = function() {...}
+
+  self.texture.image = self.imageObj;
+}; /**
+    * ProgressiveImgLoader.js <https://github.com/knee-cola/ProgressiveImgLoader.js>
+    * Released under the MIT license
+    * @author Nikola Derežić / https://github.com/knee-cola
+    * 
+    * This is a simple progressive image loader for Three.js
+    * 
+    * It enables the smaller image (short loading time) files to be pre-loaded first,
+    * before the big texture image is fully loaded.
+    * 
+    * The images are loaded in the order they are passed to the loader
+    * 
+    * The loader dispatches the following events:
+    *  - progress = dispatched evey time an additional image was loaded
+    *  - done = dispatched after the last image was loaded
+    *  
+    * Here's a simple example:
+    * 
+    *  // Defining an array of different sizes of images
+    *  //
+    *  // Hint: apart from degrading image resolution, smaller image files
+    *  //       can also be produced by increasing the JPG compression
+    *  var imageUrls = ['480p.jpg', '720p.jpg', '1080p.jpg', '2048p.jpg']:
+    *  
+    *  // creating a new loader
+    *  var loader = new ProgressiveImageLoader(imageUrls);
+    *  
+    *  // registering event handlers
+    *  loader.addEventListener('progress', function() { console.log('progress');  });
+    *  loader.addEventListener('done', function() { console.log('done');  });
+    *  
+    *  // creating material - calling the [load] function
+    *  var material = new THREE.MeshBasicMaterial({ map: loader.load() })
+    *
+    *  var mesh = new THREE.Mesh(geometry, material);
+    *  
+    *  scene.add(mesh);
+    * 
+    */
 
 var proto = ProgressiveImgLoader.prototype = Object.create(_three.EventDispatcher.prototype);
 
@@ -327,41 +359,13 @@ proto.load = function (images) {
 
   var self = this;
 
-  var texture = new _three.Texture();
-
-  // create an image object
-  var imageObj = self.imageObj = new Image(),
-      loadingIx = 0;
-
-  // this needs to be sit in order not to get "Tainted canvases may not be loaded." WebGL error
-  imageObj.crossOrigin = "anonymous";
-
-  imageObj.onload = function () {
-
-    // [imageObj] is set to NULL when the object is disposed
-    if (self.imageObj) {
-
-      texture.needsUpdate = true;
-
-      if (loadingIx < images.length) {
-        self.dispatchEvent({ type: 'progress', imageIndex: loadingIx });
-
-        // don't change the image [src] until the texture had a chance to update itself
-        window.setTimeout(function () {
-          imageObj.src = images[loadingIx++];
-        }, 1000);
-      } else {
-        self.dispatchEvent({ type: 'done' });
-        self.imageObj = null;
-      }
-    }
-  }; // imageObj.onload = function() {...}
+  self.images = images;
+  self.loadingIx = 0;
 
   // the loading process will begin after we set the [src] property
-  imageObj.src = images[loadingIx++];
-  texture.image = imageObj;
+  self.imageObj.src = self.images[self.loadingIx++];
 
-  return texture;
+  return self.texture;
 }; // proto.load = function(images) {...}
 
 proto.dispose = function () {
@@ -1013,12 +1017,6 @@ proto.initSphere = function () {
 	    sphere_H_segments = 64,
 	    sphere_V_segments = 64;
 
-	this.imgLoader = new _progressiveImgLoader.ProgressiveImgLoader();
-
-	this.loader_onDone = this.loader_onDone.bind(this);
-
-	this.imgLoader.addEventListener('done', this.loader_onDone);
-
 	var geometry = new _three.SphereGeometry(speherRadius, sphere_H_segments, sphere_V_segments);
 
 	// check if a special UV mapping function should be used
@@ -1027,14 +1025,12 @@ proto.initSphere = function () {
 	}
 
 	this.mesh = new _three.Mesh(geometry, new _three.MeshBasicMaterial({
-		map: this.imgLoader.load(this.config.sphere),
+		map: this.loadImages(this.config.sphere),
 		side: _three.FrontSide // displaying the texture on the outer side of the sphere
 	}));
 
 	this.mesh.scale.x = -1; // flipping sphere inside-out - not the texture is rendered on the inner side
 	this.scene.add(this.mesh);
-
-	this.showLoader();
 }; // proto.initSphere = function(imageUrls) {...}
 
 proto.initLogo = function (logoUrl, logoDistance) {
@@ -1150,6 +1146,7 @@ proto.hideLoader = function () {
 }; // proto.hideLoader = function() { ... }
 
 proto.loader_onDone = function () {
+	console.log("loader_onDone");
 	this.loader_onDone = null; // loader mi više nije potreban
 	this.hideLoader();
 };
@@ -1176,6 +1173,27 @@ proto.dispose = function () {
 
 	this.loaderEl = this.imgLoader = this.closeButton = this.container = this.renderer = this.container = this.camera = this.scene = this.sphere = this.controls = null;
 }; // proto.dispose = function() {...}
+
+
+/*-------------------------------------------------------------------------*/ /**
+                                                                              * Fetches the images from server and assignes them to a texture
+                                                                              *
+                                                                              * @param      {Array}    images  array containg image URLs
+                                                                              * @return     {Texture}  Three.js texture on which the images will be painted
+                                                                              */
+proto.loadImages = function (images) {
+
+	if (!this.imgLoader) {
+		this.imgLoader = new _progressiveImgLoader.ProgressiveImgLoader();
+
+		this.loader_onDone = this.loader_onDone.bind(this);
+		this.imgLoader.addEventListener('done', this.loader_onDone);
+	}
+
+	this.showLoader();
+
+	return this.imgLoader.load(images);
+}; // proto.loadImages = function(images) {...}
 
 exports.Viewer = SphereViewer;
 

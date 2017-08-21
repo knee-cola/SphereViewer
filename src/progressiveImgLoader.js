@@ -43,7 +43,43 @@ import {
     Texture as THREE_Texture
   } from 'three'
 
-var ProgressiveImgLoader = function() { };
+var ProgressiveImgLoader = function() {
+
+  var self = this;
+
+  self.texture = new THREE_Texture();
+
+  // create an image object
+  self.imageObj = new Image();
+  // this needs to be sit in order not to get "Tainted canvases may not be loaded." WebGL error
+  self.imageObj.crossOrigin = "anonymous";
+
+  self.imageObj.onload = function() {
+
+    // [imageObj] is set to NULL when the object is disposed
+    if(self.imageObj) {
+
+      self.texture.needsUpdate = true;
+
+      if(self.loadingIx < self.images.length) {
+        self.dispatchEvent({type: 'progress', imageIndex: self.loadingIx});
+
+        // don't change the image [src] until the texture had a chance to update itself
+        window.setTimeout(function() {
+          self.imageObj.src = self.images[self.loadingIx++];
+        }, 1000);
+
+      } else {
+        self.dispatchEvent({type: 'done'});
+      }
+        
+    }
+
+  }; // imageObj.onload = function() {...}
+  
+  self.texture.image = self.imageObj;
+
+};
 
 var proto = ProgressiveImgLoader.prototype = Object.create( THREE_EventDispatcher.prototype );
 
@@ -51,44 +87,13 @@ proto.load = function(images) {
 
   var self = this;
 
-  var texture = new THREE_Texture();
-
-  // create an image object
-  var imageObj = self.imageObj = new Image(),
-      loadingIx = 0;
-
-  // this needs to be sit in order not to get "Tainted canvases may not be loaded." WebGL error
-  imageObj.crossOrigin = "anonymous";
-
-  imageObj.onload = function() {
-
-    // [imageObj] is set to NULL when the object is disposed
-    if(self.imageObj) {
-
-      texture.needsUpdate = true;
-
-      if(loadingIx < images.length) {
-        self.dispatchEvent({type: 'progress', imageIndex: loadingIx});
-
-        // don't change the image [src] until the texture had a chance to update itself
-        window.setTimeout(function() {
-          imageObj.src = images[loadingIx++];
-        }, 1000);
-
-      } else {
-        self.dispatchEvent({type: 'done'});
-        self.imageObj = null;
-      }
-        
-    }
-
-  }; // imageObj.onload = function() {...}
+  self.images = images;
+  self.loadingIx = 0;
 
   // the loading process will begin after we set the [src] property
-  imageObj.src = images[loadingIx++];
-  texture.image = imageObj;
+  self.imageObj.src = self.images[self.loadingIx++];
 
-  return(texture);
+  return(self.texture);
 
 }; // proto.load = function(images) {...}
 

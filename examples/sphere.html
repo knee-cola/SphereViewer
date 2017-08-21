@@ -12,6 +12,40 @@
     <script src="../dist/sphereViewer.js"></script>
   </head>
   <body>
+    <style>
+      .cmdPrevSphere,
+      .cmdNextSphere {
+        position: absolute;
+        z-index: 101;
+        color: white;
+        height: 90%;
+        cursor: pointer;
+      }
+
+      .cmdNextSphere {
+        right: 0;
+      }
+      .cmdPrevSphere {
+        left: 0;
+      }
+
+      .cmdPrevSphere i,
+      .cmdNextSphere i {
+        position: absolute;
+        top:50%;
+        font-size: 5em;
+      }
+      .cmdNextSphere i {
+        right: 0;
+      }
+    </style>
+    <div class="cmdPrevSphere" title="Show previous sphere">
+      <i class="material-icons">keyboard_arrow_left</i>
+    </div>
+    <div class="cmdNextSphere" title="Show next sphere">
+      <i class="material-icons">keyboard_arrow_right</i>
+    </div>
+
     <script>
       // starting all up
       initSphere();
@@ -88,8 +122,14 @@
 
           document.getElementsByTagName('body')[0].appendChild(cmdShowSphere);
         });
-      }
 
+        $('.cmdPrevSphere').on('click', () => {
+          sphere.imgLoader.load(['img/room.jpg'])
+        });
+        $('.cmdNextSphere').on('click', () => {
+          sphere.imgLoader.load(['img/sphere2048.jpg'])
+        });
+      }
     </script>
   </body>
 </html>
